@@ -34,7 +34,9 @@ end
 
 file_manager.@files.each { |file_path|
   codingstyle_manager.@codingstyles.each_value { |codingstyle|
-    if (is_right_file_type(get_file_type(file_path), codingstyle.@file_target)) # TODO: Add check for options
+    if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) &&
+      !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count {|s| s == codingstyle.@type.to_s} != 0)
+       # TODO: Add check for options
       codingstyle_manager.apply_check_on(codingstyle, file_path, options)
     end
   }
@@ -72,7 +74,7 @@ else
       puts " ‣ #{"(#{key})".light_red} - #{codingstyle_manager.@codingstyles[key].@desc}"
       puts
       codingstyle_manager.@errors[key].each { |error|
-        puts "      • #{error.@file_path.dark_grey}"
+        puts "      • #{error.@file_path.dark_grey}#{error.@row != -1 ? ":#{error.@row}".dark_grey : ""}"
 
         if error.@codingstyle.@level == CodingStyleLevel::Major
           major += 1
@@ -86,5 +88,5 @@ else
   }
 
   puts
-  puts " #{"MAJOR ".light_red} #{major} • #{"MINOR ".light_green} #{minor} • #{"INFO ".light_blue} #{info}"
+  puts " #{"MAJOR".light_red}: #{major} • #{"MINOR".light_green}: #{minor} • #{"INFO".light_blue}: #{info}"
 end

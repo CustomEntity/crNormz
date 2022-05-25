@@ -12,11 +12,6 @@ end
 class FileManager
   def initialize(files : Array(String))
     @files = files
-
-    @files.each {|file_path|
-
-        puts "#{file_path} #{get_file_type(file_path)}"
-    }
   end
 end
 
