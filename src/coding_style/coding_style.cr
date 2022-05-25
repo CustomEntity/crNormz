@@ -51,13 +51,13 @@ class CodingStyle
     @errors = Set(CodingStyleErrorInfo).new
   end
 
-  def handle(file_path : String, file_content : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     puts "Handle method not implemented !"
     exit(84)
   end
 end
 
 class CodingStyleErrorInfo
-  def initialize(@file_path : String, @row : Int32, @column : Int32)
+  def initialize(@codingstyle : CodingStyle, @file_path : String, @row : Int32, @column : Int32)
   end
 end

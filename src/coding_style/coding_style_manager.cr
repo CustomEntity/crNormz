@@ -7,17 +7,32 @@ DELIVERY_FOLDER_CONTENTS =
 
 class CodingStyleManager
   def initialize
-    @codingstyles = Set(CodingStyle).new
+    @codingstyles = Hash(CodingStyleType, CodingStyle).new
     @errors = Hash(CodingStyleType, Set(CodingStyleErrorInfo)).new
 
     self.load_all_codingstyles
   end
 
   def load_all_codingstyles
-    @codingstyles.add(DELIVERY_FOLDER_CONTENTS)
+    @codingstyles[DELIVERY_FOLDER_CONTENTS.@type] = DELIVERY_FOLDER_CONTENTS
   end
 
   def apply_check_on(codingstyle : CodingStyle, file_path : String, options : Hash(String, String))
-    puts "apply #{codingstyle.@type} on #{file_path}"
+    file = File.open(file_path)
+
+
+    curr_errors : Set(CodingStyleErrorInfo)
+    if (@errors.has_key?(codingstyle.@type))
+      curr_errors = @errors[codingstyle.@type]
+    else
+      curr_errors = Set(CodingStyleErrorInfo).new
+    end
+    
+    new_errors : Set(CodingStyleErrorInfo) = codingstyle.handle(file_path, options)
+    new_errors.each {|err|
+      curr_errors.add(err)
+    }
+    @errors[codingstyle.@type] = curr_errors
+    file.close
   end
 end

@@ -8,12 +8,28 @@ class String
       add_style(30)
     end
 
+    def orange
+      add_style(93)
+    end
+
     def red
       add_style(31)
     end
 
+    def light_red
+      add_style(91)
+    end
+
     def green
       add_style(32)
+    end
+
+    def light_green
+      add_style(92)
+    end
+
+    def dark_grey
+      add_style(90)
     end
 
     def yellow
@@ -22,6 +38,10 @@ class String
 
     def blue
       add_style(34)
+    end
+
+    def light_blue
+      add_style(94)
     end
 
     def magenta
