@@ -5,7 +5,7 @@ class String
     end
 
     def black
-      add_style(31)
+      add_style(30)
     end
 
     def red

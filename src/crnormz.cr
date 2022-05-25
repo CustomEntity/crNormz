@@ -31,3 +31,23 @@ OptionParser.parse do |parser|
     exit(1)
   end
 end
+
+
+file_manager.@files.each {|file_path|
+  codingstyle_manager.@codingstyles.each {|codingstyle|
+    if (is_right_file_type(get_file_type(file_path), codingstyle.@file_target)) # TODO: Add check for options
+      codingstyle_manager.apply_check_on(codingstyle, file_path, options)
+    end
+  }
+}
+
+
+puts "
+              __                         
+  ___ _ __ /\\ \\ \\___  _ __ _ __ ___  ____
+ / __| '__/  \\/ / _ \\| '__| '_ ` _ \\|_  /
+| (__| | / /\\  / (_) | |  | | | | | |/ / 
+ \\___|_| \\_\\ \\/ \\___/|_|  |_| |_| |_/___|
+                                         
+".red.bold
+
