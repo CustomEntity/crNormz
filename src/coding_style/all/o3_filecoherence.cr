@@ -1,7 +1,7 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-# Thanks Léo for this beautiful regex <3
+# Thanks Léo for this regex <3
 FUNCTION_REGEX = /^.*?(unsigned|signed)?\s*((s_|sf)\w+|_s|_t|void|int|char|short|long|float|double|bool|size_t)\s+((\w|\*)+)\s*\([^)]*(,\n|\)[^;]\s*)/
 
 class FileCoherence < CodingStyle
