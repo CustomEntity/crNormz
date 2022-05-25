@@ -1,6 +1,10 @@
 require "./utils/string_utils"
+require "./file/file_manager"
+require "./coding_style/coding_style_manager"
 require "option_parser"
 
+codingstyle_manager = CodingStyleManager.new
+file_manager = FileManager.new(Dir.glob("**/*"))
 options = Hash(String, String).new
 
 OptionParser.parse do |parser|
@@ -27,6 +31,3 @@ OptionParser.parse do |parser|
     exit(1)
   end
 end
-
-
-puts "Ignoring level #{options["ignoring-levels"]}".red
