@@ -28,6 +28,7 @@ require "./all/g2_functions_separation"
 require "./all/g6_include"
 require "./all/g7_line_endings"
 require "./all/f3_columns_number"
+require "./all/h2_include_guard"
 require "./all/h3_macros"
 require "./coding_style"
 
@@ -48,6 +49,8 @@ LINE_ENDINGS =
 
 COLUMNS_NUMBER =
   LineEndings.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
+INCLUDE_GUARD =
+  IncludeGuard.new(CodingStyleType::H2, FileType::Header.value, CodingStyleLevel::Minor, "Include Guard", "Headers should be protected from double inclusion.")
 MACROS =
   Macros.new(CodingStyleType::H3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Macros", "Macros should match only one statement.")
 
@@ -69,6 +72,7 @@ class CodingStyleManager
     @codingstyles[LINE_ENDINGS.@type] = LINE_ENDINGS
 
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
+    @codingstyles[INCLUDE_GUARD.@type] = INCLUDE_GUARD
     @codingstyles[MACROS.@type] = MACROS
   end
 
