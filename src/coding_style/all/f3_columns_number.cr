@@ -36,7 +36,7 @@ class ColumnsNumber < CodingStyle
       column = 0
 
       column += line.scan(/[^\t]/).size
-      column += line.scan(/[\t]}/).size * 8
+      column += line.scan(/[\t]/).size * 8
 
       if column - 1 > 80
         errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, 80))
