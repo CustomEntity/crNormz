@@ -28,6 +28,7 @@ require "./all/g2_functions_separation"
 require "./all/g6_include"
 require "./all/g7_line_endings"
 require "./all/f3_columns_number"
+require "./all/v3_pointers"
 require "./all/c3_goto"
 require "./all/a3_line_break"
 require "./all/h2_include_guard"
@@ -51,6 +52,8 @@ LINE_ENDINGS =
 
 COLUMNS_NUMBER =
   ColumnsNumber.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
+POINTERS =
+  Pointers.new(CodingStyleType::V3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Pointers", "The pointer symbol (*) should be attached to the associated variable, with no spaces.")
 GOTO =
   Goto.new(CodingStyleType::C3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Goto", "Est-ce que ta déjà léché les deux boules d'un goto ?")
 
@@ -80,6 +83,7 @@ class CodingStyleManager
     @codingstyles[LINE_ENDINGS.@type] = LINE_ENDINGS
 
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
+    @codingstyles[POINTERS.@type] = POINTERS
     @codingstyles[GOTO.@type] = GOTO
     @codingstyles[LINE_BREAK.@type] = LINE_BREAK
     @codingstyles[INCLUDE_GUARD.@type] = INCLUDE_GUARD
