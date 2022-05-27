@@ -92,7 +92,13 @@ else
   codingstyle_manager.@errors.each { |key, value|
     if value.size != 0
       puts
-      puts " ‣ #{"(#{key})".light_red} - #{codingstyle_manager.@codingstyles[key].@desc}"
+      if codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Major
+        puts " ‣ #{"(#{key})".light_red} - #{codingstyle_manager.@codingstyles[key].@desc}"
+      elsif codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Minor
+        puts " ‣ #{"(#{key})".light_green} - #{codingstyle_manager.@codingstyles[key].@desc}"
+      elsif codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Info
+        puts " ‣ #{"(#{key})".light_blue} - #{codingstyle_manager.@codingstyles[key].@desc}"
+      end
       puts
       codingstyle_manager.@errors[key].each { |error|
         puts "      • #{error.@file_path.dark_grey}#{error.@row != -1 ? ":#{error.@row}".dark_grey : ""}"
