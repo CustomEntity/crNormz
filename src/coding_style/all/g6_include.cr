@@ -22,7 +22,6 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-#TODO: Enhance this regex
 INCLUDE_REGEX = /#include[ ].*(\"|<).*(?<!\.h)(\"|>)/
 
 class Include < CodingStyle

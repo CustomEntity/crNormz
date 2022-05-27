@@ -1,24 +1,24 @@
-#MIT License
+# MIT License
 #
-#Copyright (c) 2022 CustomEntity
+# Copyright (c) 2022 CustomEntity
 #
-#Permission is hereby granted, free of charge, to any person obtaining a copy
-#of this software and associated documentation files (the "Software"), to deal
-#in the Software without restriction, including without limitation the rights
-#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#copies of the Software, and to permit persons to whom the Software is
-#furnished to do so, subject to the following conditions:
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-#The above copyright notice and this permission notice shall be included in all
-#copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
 #
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 require "../crnormz"
 require "./all/o1_deliveryfoldercontents"
 require "./all/o3_filecoherence"
@@ -26,6 +26,7 @@ require "./all/o4_namingfileandfolders"
 require "./all/g1_fileheader"
 require "./all/g2_functions_separation"
 require "./all/g6_include"
+require "./all/g7_line_endings"
 require "./all/f3_columns_number"
 require "./coding_style"
 
@@ -41,10 +42,11 @@ FUNCTION_SEPARATION =
   FunctionSeparation.new(CodingStyleType::G2, FileType::Source.value, CodingStyleLevel::Minor, "Separation of functions", "Inside a source file, one and only one empty line should separate the implementations of functions.")
 INCLUDE =
   Include.new(CodingStyleType::G6, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Include", "Include directive should only include header .h files.")
-
+LINE_ENDINGS =
+  Include.new(CodingStyleType::G7, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Line Endings", "Line endings must be done in UNIX style (with \\n).")
 
 COLUMNS_NUMBER =
- ColumnsNumber.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
+  LineEndings.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
 
 class CodingStyleManager
   def initialize
@@ -61,6 +63,7 @@ class CodingStyleManager
     @codingstyles[FILE_HEADER.@type] = FILE_HEADER
     @codingstyles[FUNCTION_SEPARATION.@type] = FUNCTION_SEPARATION
     @codingstyles[INCLUDE.@type] = INCLUDE
+    @codingstyles[LINE_ENDINGS.@type] = LINE_ENDINGS
 
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
   end
