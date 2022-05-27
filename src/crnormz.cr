@@ -101,7 +101,7 @@ else
       end
       puts
       codingstyle_manager.@errors[key].each { |error|
-        puts "      • #{error.@file_path.dark_grey}#{error.@row != -1 ? ":#{error.@row}".dark_grey : ""}"
+        puts "      • #{error.@file_path.dark_grey}#{error.@row != -1 ? ":#{error.@row}".dark_grey : ""}#{error.@column != -1 ? ":#{error.@column}".dark_grey : ""}"
 
         if error.@codingstyle.@level == CodingStyleLevel::Major
           major += 1

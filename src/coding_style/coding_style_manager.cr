@@ -25,6 +25,7 @@ require "./all/o3_filecoherence"
 require "./all/o4_namingfileandfolders"
 require "./all/g1_fileheader"
 require "./all/g2_functions_separation"
+require "./all/f3_columns_number"
 require "./coding_style"
 
 DELIVERY_FOLDER_CONTENTS =
@@ -37,6 +38,10 @@ FILE_HEADER =
   FileHeader.new(CodingStyleType::G1, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "File Header", "The source files (.c,.h, Makefile,...) should always start with the standard header of the school.")
 FUNCTION_SEPARATION =
   FunctionSeparation.new(CodingStyleType::G2, FileType::Source.value, CodingStyleLevel::Minor, "Separation of functions", "Inside a source file, one and only one empty line should separate the implementations of functions.")
+
+
+COLUMNS_NUMBER =
+ ColumnsNumber.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
 
 class CodingStyleManager
   def initialize
@@ -52,6 +57,8 @@ class CodingStyleManager
     @codingstyles[NAMING_FILE_AND_FOLDERS.@type] = NAMING_FILE_AND_FOLDERS
     @codingstyles[FILE_HEADER.@type] = FILE_HEADER
     @codingstyles[FUNCTION_SEPARATION.@type] = FUNCTION_SEPARATION
+
+    @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
   end
 
   def apply_check_on(codingstyle : CodingStyle, file_path : String, options : Hash(String, String))
