@@ -22,7 +22,7 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-GOTO_REGEX = /[^0-9a-zA-Z_]*goto[^0-9a-zA-Z].*;/
+GOTO_REGEX = /goto[^0-9a-zA-Z].*;/
 
 class Goto < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
@@ -38,7 +38,7 @@ class Goto < CodingStyle
       curr_ch = 0
       line_ch = 0
       content.chars.each { |ch|
-        if curr_ch != match.begin
+        if curr_ch - 1 != match.begin
           curr_ch += 1
           line_ch += 1
           if ch == '\n'
@@ -52,5 +52,3 @@ class Goto < CodingStyle
     errors
   end
 end
-
-# \/\*\n\*\* EPITECH PROJECT, [0-9]{4}\n\*\* .*\n\*\* File description:\n(\*\* .*\n)+\*\/
