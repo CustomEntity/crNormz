@@ -22,7 +22,10 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-class NamingFileAndFolders < CodingStyle
+SOURCE_HEADER_REGEX = /\/\*\n\*\* EPITECH PROJECT, [0-9]{4}\n\*\* .*\n\*\* File description:\n\*\* .*\n+\*\//
+MAKEFILE_REGEX = /##\n## EPITECH PROJECT, [0-9]{4}\n## .*\n## File description:\n## .*\n##/
+
+class FileHeader < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
@@ -30,8 +33,17 @@ class NamingFileAndFolders < CodingStyle
   def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
-    if File.basename(file_path).underscore != File.basename(file_path)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
+    content : String = File.read(file_path)
+    file_type : FileType = get_file_type(file_path)
+
+    if file_type == FileType::Source || file_type == FileType::Header
+      if content !~ SOURCE_HEADER_REGEX
+        errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
+      end
+    elsif file_type == FileType::Makefile
+      if content !~ MAKEFILE_REGEX
+        errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
+      end
     end
     errors
   end
