@@ -22,26 +22,31 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-class ColumnsNumber < CodingStyle
+DEFINE_MACRO_REGEX = /#define[ \t]*(.+?\)[ \t]*|[a-zA-Z0-9]*[ \t]*)(.*)/
+
+class Macros < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
 
   def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    lines = File.read(file_path).split("\n").map { |line| line + "\n" }
-    curr_line = 1
+    content : String = File.read(file_path)
 
-    lines.each { |line|
-      column = 0
-
-      column += line.scan(/[^\t]/).size
-      column += line.scan(/[\t]}/).size * 8
-
-      if column - 1 > 80
-        errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, 80))
+    content.scan(DEFINE_MACRO_REGEX).each { |match|
+      line = 1
+      curr_ch = 0
+      content.chars.each { |ch|
+        if curr_ch != match.begin
+          curr_ch += 1
+          if ch == '\n'
+            line += 1
+          end
+        end
+      }
+      if match.captures[1].to_s.count(";") != 0
+        errors.add(CodingStyleErrorInfo.new(self, file_path, line, -1))
       end
-      curr_line += 1
     }
     errors
   end

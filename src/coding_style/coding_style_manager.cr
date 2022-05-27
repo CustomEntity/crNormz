@@ -28,6 +28,7 @@ require "./all/g2_functions_separation"
 require "./all/g6_include"
 require "./all/g7_line_endings"
 require "./all/f3_columns_number"
+require "./all/h3_macros"
 require "./coding_style"
 
 DELIVERY_FOLDER_CONTENTS =
@@ -43,10 +44,12 @@ FUNCTION_SEPARATION =
 INCLUDE =
   Include.new(CodingStyleType::G6, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Include", "Include directive should only include header .h files.")
 LINE_ENDINGS =
-  Include.new(CodingStyleType::G7, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Line Endings", "Line endings must be done in UNIX style (with \\n).")
+  LineEndings.new(CodingStyleType::G7, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Line Endings", "Line endings must be done in UNIX style (with \\n).")
 
 COLUMNS_NUMBER =
   LineEndings.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
+MACROS =
+  Macros.new(CodingStyleType::H3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Macros", "Macros should match only one statement.")
 
 class CodingStyleManager
   def initialize
@@ -66,6 +69,7 @@ class CodingStyleManager
     @codingstyles[LINE_ENDINGS.@type] = LINE_ENDINGS
 
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
+    @codingstyles[MACROS.@type] = MACROS
   end
 
   def apply_check_on(codingstyle : CodingStyle, file_path : String, options : Hash(String, String))

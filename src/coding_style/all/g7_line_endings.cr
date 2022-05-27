@@ -34,7 +34,7 @@ class LineEndings < CodingStyle
 
     lines.each { |line|
       if line.ends_with?("\r\n")
-          errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, -1))
+        errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, -1))
       end
       curr_line += 1
     }
