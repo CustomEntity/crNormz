@@ -9,7 +9,7 @@
 <h4 align="center">The most awesome norminette made
 using <a href="https://crystal-lang.org" target="_blank">Crystal</a>.</h4>
 
-<p align="center">
+<div style="text-align: center;">
 
 <img alt="APM" src="https://img.shields.io/apm/l/vim-mode">
 <img alt="GitHub issues" src="https://img.shields.io/github/issues/CustomEntity/crNormz?color=yellow">
@@ -21,6 +21,6 @@ using <a href="https://crystal-lang.org" target="_blank">Crystal</a>.</h4>
   <a href="#how-to-use">How to use</a> •
   <a href="#features">Features</a> •
   <a href="#credits">Credits</a>
-</p>
+</div>
 
 ![screenshot](project.gif)
