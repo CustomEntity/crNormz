@@ -27,6 +27,7 @@ require "./all/g1_fileheader"
 require "./all/g2_functions_separation"
 require "./all/g6_include"
 require "./all/g7_line_endings"
+require "./all/g8_trailing_spaces"
 require "./all/f3_columns_number"
 require "./all/v3_pointers"
 require "./all/c3_goto"
@@ -49,6 +50,8 @@ INCLUDE =
   Include.new(CodingStyleType::G6, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Include", "Include directive should only include header .h files.")
 LINE_ENDINGS =
   LineEndings.new(CodingStyleType::G7, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Line Endings", "Line endings must be done in UNIX style (with \\n).")
+TRAILING_SPACES =
+  TrailingSpaces.new(CodingStyleType::G8, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Trailing Spaces", "No trailing spaces must be present at the end of a line.")
 
 COLUMNS_NUMBER =
   ColumnsNumber.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
@@ -81,6 +84,7 @@ class CodingStyleManager
     @codingstyles[FUNCTION_SEPARATION.@type] = FUNCTION_SEPARATION
     @codingstyles[INCLUDE.@type] = INCLUDE
     @codingstyles[LINE_ENDINGS.@type] = LINE_ENDINGS
+    @codingstyles[TRAILING_SPACES.@type] = TRAILING_SPACES
 
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
     @codingstyles[POINTERS.@type] = POINTERS

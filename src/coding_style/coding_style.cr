@@ -79,6 +79,6 @@ class CodingStyle
 end
 
 class CodingStyleErrorInfo
-  def initialize(@codingstyle : CodingStyle, @file_path : String, @row : Int32, @column : Int32)
+  def initialize(@codingstyle : CodingStyle, @file_path : String, @row : Int32, @column : Int32, @additional_info : String = "")
   end
 end
