@@ -48,5 +48,3 @@ class FileHeader < CodingStyle
     errors
   end
 end
-
-# \/\*\n\*\* EPITECH PROJECT, [0-9]{4}\n\*\* .*\n\*\* File description:\n(\*\* .*\n)+\*\/

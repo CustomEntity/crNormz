@@ -31,11 +31,9 @@ class LineBreak < CodingStyle
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
     content : String = File.read(file_path)
-    if content[-1] != '\n'
+    if content.size > 0 && content[-1] != '\n'
       errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
     end
     errors
   end
 end
-
-# \/\*\n\*\* EPITECH PROJECT, [0-9]{4}\n\*\* .*\n\*\* File description:\n(\*\* .*\n)+\*\/
