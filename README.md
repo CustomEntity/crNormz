@@ -25,4 +25,9 @@ using <a href="https://crystal-lang.org" target="_blank">Crystal</a>.</h4>
   <a href="#credits">Credits</a>
 </p>
 
-![screenshot](project.gif)
+
+<p align="center">
+  <img src="project.gif"  alt="project.gif"/>
+</p>
+
+
