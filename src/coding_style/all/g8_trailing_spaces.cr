@@ -22,7 +22,7 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-TRAILING_SPACES_REGEX = /([ ]+$)/m
+TRAILING_SPACES_REGEX = /([ \t]+$)/m
 
 class TrailingSpaces < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
