@@ -19,73 +19,36 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
-class String
+require "../coding_style"
+require "../../file/file_manager"
 
-    def add_style(color_code)
-        "\e[#{color_code}m#{self}\e[0m"
-    end
+POINTERS_REGEX = /([^(\t ]+_t|sf[a-zA-Z]*|int|signed|unsigned|char|long|short|float|double|void|const|struct [^ ]+)(\*|[ ]*\*[ ]+)/
 
-    def black
-      add_style(30)
-    end
-
-    def orange
-      add_style(93)
-    end
-
-    def red
-      add_style(31)
-    end
-
-    def light_red
-      add_style(91)
-    end
-
-    def green
-      add_style(32)
-    end
-
-    def light_green
-      add_style(92)
-    end
-
-    def dark_grey
-      add_style(90)
-    end
-
-    def yellow
-      add_style(33)
-    end
-
-    def blue
-      add_style(34)
-    end
-
-    def light_blue
-      add_style(94)
-    end
-
-    def magenta
-      add_style(35)
-    end
-
-    def cyan
-      add_style(36)
-    end
-
-    def grey
-      add_style(37)
-    end
-
-    def bold
-      add_style(1)
-    end
-
-    def italic
-      add_style(3)
-    end
-
-    def underline
-      add_style(4)
-    end
+class Pointers < CodingStyle
+  def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
+    super(@type, @file_target, @level, @name, @desc)
   end
+
+  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+    errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
+    content : String = File.read(file_path)
+
+    content.scan(POINTERS_REGEX).each { |match|
+      line = 1
+      curr_ch = 0
+      line_ch = 0
+      content.chars.each { |ch|
+        if curr_ch - 1 != match.begin
+          curr_ch += 1
+          line_ch += 1
+          if ch == '\n'
+            line += 1
+            line_ch = 0
+          end
+        end
+      }
+      errors.add(CodingStyleErrorInfo.new(self, file_path, line, line_ch))
+    }
+    errors
+  end
+end

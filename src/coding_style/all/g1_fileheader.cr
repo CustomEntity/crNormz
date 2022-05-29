@@ -19,37 +19,32 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
-require "../coding_style/coding_style"
+require "../coding_style"
+require "../../file/file_manager"
 
-@[Flags]
-enum FileType
-  Header
-  Source
-  Makefile
-  Directory
-  Unknown
-end
+SOURCE_HEADER_REGEX = /\/\*\n\*\* EPITECH PROJECT, [0-9]{4}\n\*\* .*\n\*\* File description:\n\*\* .*\n+\*\//
+MAKEFILE_REGEX = /##\n## EPITECH PROJECT, [0-9]{4}\n## .*\n## File description:\n## .*\n##/
 
-class FileManager
-  def initialize(files : Array(String))
-    @files = files
+class FileHeader < CodingStyle
+  def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
+    super(@type, @file_target, @level, @name, @desc)
   end
-end
 
-def get_file_type(file_path : String) : FileType
-    if file_path =~ /Makefile$/
-        FileType::Makefile
-      elsif File.extname(file_path) == ".h"
-        FileType::Header
-      elsif File.extname(file_path) == ".c"
-        FileType::Source
-      elsif File.directory?(file_path)
-        FileType::Directory
-      else
-        FileType::Unknown
+  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+    errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
+
+    content : String = File.read(file_path)
+    file_type : FileType = get_file_type(file_path)
+
+    if file_type == FileType::Source || file_type == FileType::Header
+      if content !~ SOURCE_HEADER_REGEX
+        errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
       end
-end
-
-def is_right_file_type(file_type : FileType, int file_target) : Bool
-  return ((file_target & file_type.value) == file_type.value)
+    elsif file_type == FileType::Makefile
+      if content !~ MAKEFILE_REGEX
+        errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
+      end
+    end
+    errors
+  end
 end

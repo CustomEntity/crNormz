@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # MIT License
 #
 # Copyright (c) 2022 CustomEntity
@@ -19,20 +20,38 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-require "../coding_style"
-require "../../file/file_manager"
 
-class NamingFileAndFolders < CodingStyle
-  def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
-    super(@type, @file_target, @level, @name, @desc)
-  end
+tput clear
 
-  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
-    errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  if [ $(id -u) -ne 0 ]; then
+    echo "=> You must run this with root privileges."
+    sudo ./$0
+    exit 1
+  else
+    echo "=> Installing crystal"
+  fi
+  sudo snap install crystal --classic
+  sudo apt install libssl-dev      # for using OpenSSL
+  sudo apt install libxml2-dev     # for using XML
+  sudo apt install libyaml-dev     # for using YAML
+  sudo apt install libgmp-dev      # for using Big numbers
+  sudo apt install libz-dev        # for using crystal play
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  brew update
+  brew install crystal
+else
+  echo "=> Sorry, this installer is not supported on your OS."
+  exit 1
+fi
 
-    if File.basename(file_path).underscore != File.basename(file_path)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
-    end
-    errors
-  end
-end
+git clone "https://github.com/CustomEntity/crNormz.git" crNormz_
+echo "=> Compiling crNormz.."
+crystal build crNormz_/src/crnormz.cr --release
+
+sudo mv crnormz /usr/local/bin/crnormz
+sudo chmod +x /usr/local/bin/crnormz
+sudo rm -rf crNormz_
+
+echo "=> crNormz has been installed successfully!"
+

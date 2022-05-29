@@ -22,17 +22,27 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-class NamingFileAndFolders < CodingStyle
+class ColumnsNumber < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
 
   def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
+    lines = File.read(file_path).split("\n").map { |line| line + "\n" }
+    curr_line = 1
 
-    if File.basename(file_path).underscore != File.basename(file_path)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
-    end
+    lines.each { |line|
+      column = 0
+
+      column += line.scan(/[^\t]/).size
+      column += line.scan(/[\t]/).size * 8
+
+      if column - 1 > 80
+        errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, 80))
+      end
+      curr_line += 1
+    }
     errors
   end
 end

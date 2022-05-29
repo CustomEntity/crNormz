@@ -22,17 +22,30 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-class NamingFileAndFolders < CodingStyle
+TRAILING_LINES_REGEX = /([^}^\n][\n]{3,}|[\n]{2,}$)/
+
+class TrailingLines < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
 
   def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
+    content : String = File.read(file_path)
 
-    if File.basename(file_path).underscore != File.basename(file_path)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
-    end
+    content.scan(TRAILING_LINES_REGEX).each { |match|
+      line = 1
+      curr_ch = 0
+      content.chars.each { |ch|
+        if curr_ch != match.end
+          if ch == '\n' && curr_ch + 1 != match.end
+            line += 1
+          end
+          curr_ch += 1
+        end
+      }
+      errors.add(CodingStyleErrorInfo.new(self, file_path, curr_ch == content.size ? line + 1 : line, -1))
+    }
     errors
   end
 end

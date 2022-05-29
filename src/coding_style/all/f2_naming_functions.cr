@@ -22,17 +22,37 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-class NamingFileAndFolders < CodingStyle
+# TODO: Improve this regex)
+FUNCTION_NAME_REGEX             = /^.*?\s*(?:unsigned|signed)?\s*(?:[A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+((\w|\*)+)\s*\([^)]*\)/m
+SNAKE_CASE_IGNORE_POINTER_REGEX = /^[*]*[a-z]+(?:_[a-z0-9]+)*$/m
+
+class NamingFunctions < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
 
   def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
+    content : String = File.read(file_path)
 
-    if File.basename(file_path).underscore != File.basename(file_path)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
-    end
+    content.scan(FUNCTION_NAME_REGEX).each { |match|
+      if match.captures[0] !~ SNAKE_CASE_IGNORE_POINTER_REGEX
+        line = 1
+        curr_ch = 0
+        line_ch = 0
+        content.chars.each { |ch|
+          if curr_ch != match.end
+            line_ch += 1
+            if ch == '\n'
+              line += 1
+              line_ch = 0
+            end
+            curr_ch += 1
+          end
+        }
+        errors.add(CodingStyleErrorInfo.new(self, file_path, line, line_ch))
+      end
+    }
     errors
   end
 end

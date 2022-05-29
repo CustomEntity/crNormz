@@ -1,3 +1,24 @@
+#MIT License
+#
+#Copyright (c) 2022 CustomEntity
+#
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files (the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
+#
+#The above copyright notice and this permission notice shall be included in all
+#copies or substantial portions of the Software.
+#
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#SOFTWARE.
 require "./utils/string_utils"
 require "./file/file_manager"
 require "./coding_style/coding_style_manager"
@@ -8,7 +29,7 @@ file_manager = FileManager.new(Dir.glob("**/*"))
 options = Hash(String, String).new
 
 OptionParser.parse do |parser|
-  parser.banner = "Usage: crystal crnormz [-fgtlh]"
+  parser.banner = "Usage: crnormz [-fgtlh]"
   parser.on("-f", "--ignore-file=", "Ignore file from the checker") { |files|
     options["ignoring-files"] = files
   }
@@ -71,10 +92,16 @@ else
   codingstyle_manager.@errors.each { |key, value|
     if value.size != 0
       puts
-      puts " ‣ #{"(#{key})".light_red} - #{codingstyle_manager.@codingstyles[key].@desc}"
+      if codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Major
+        puts " ‣ #{"(#{key})".light_red} - #{codingstyle_manager.@codingstyles[key].@desc}"
+      elsif codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Minor
+        puts " ‣ #{"(#{key})".light_green} - #{codingstyle_manager.@codingstyles[key].@desc}"
+      elsif codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Info
+        puts " ‣ #{"(#{key})".light_blue} - #{codingstyle_manager.@codingstyles[key].@desc}"
+      end
       puts
       codingstyle_manager.@errors[key].each { |error|
-        puts "      • #{error.@file_path.dark_grey}#{error.@row != -1 ? ":#{error.@row}".dark_grey : ""}"
+        puts "      • #{error.@file_path.dark_grey}#{error.@row != -1 ? ":#{error.@row}".dark_grey : ""}#{error.@column != -1 ? ":#{error.@column}".dark_grey : ""}#{error.@additional_info}"
 
         if error.@codingstyle.@level == CodingStyleLevel::Major
           major += 1

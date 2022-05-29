@@ -22,15 +22,28 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-class NamingFileAndFolders < CodingStyle
+IFNDEF_MACRO_REGEX  = /#ifndef[ ]*(.*)/
+HDEFINE_MACRO_REGEX = /#define[ ]*(.*)/
+ENDIF_MACRO_REGEX   = /#endif/
+
+class IncludeGuard < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
 
   def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
+    content : String = File.read(file_path)
+    lines = File.read(file_path).split("\n").map { |line| line + "\n" }
+    header_name : String?
 
-    if File.basename(file_path).underscore != File.basename(file_path)
+    ifndef_match = content.scan(IFNDEF_MACRO_REGEX)
+    if ifndef_match.size != 0
+      header_name = ifndef_match[0].captures[0].to_s
+    end
+    define_match = content.scan(HDEFINE_MACRO_REGEX)
+    endif_match = content.scan(ENDIF_MACRO_REGEX)
+    if ifndef_match.size == 0 || define_match.size == 0 || endif_match.size == 0 || define_match[0].captures[0].to_s != header_name
       errors.add(CodingStyleErrorInfo.new(self, file_path, -1, -1))
     end
     errors
