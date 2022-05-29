@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/CustomEntity/crNormz"><img src="assets/readme/logo.png" alt="Markdownify" width="200"></a>
+  <a href="https://github.com/CustomEntity/crNormz"><img src="assets/readme/logo.png" alt="logo"></a>
   <br>
   crNormz
   <br>
@@ -12,9 +12,9 @@ using <a href="https://crystal-lang.org" target="_blank">Crystal</a>.</h4>
 <p align="center">
 
 <img alt="APM" src="https://img.shields.io/apm/l/vim-mode">
-<img alt="GitHub issues" src="https://img.shields.io/github/issues/CustomEntity/crNormz?color=yellow">
-<img alt="Discord" src="https://img.shields.io/discord/980113210881474672?color=blueviolet&label=discord">
-<img alt="GitHub release" src="https://img.shields.io/github/v/release/CustomEntity/crNormz?color=yellow">
+<a href="https://github.com/CustomEntity/crNormz/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/CustomEntity/crNormz?color=yellow"></a>
+<a href="https://discord.gg/ryTcYu26Gy"><img alt="Discord" src="https://img.shields.io/badge/discord-join--us-green"></a>
+<a href="https://github.com/CustomEntity/crNormz/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/CustomEntity/crNormz?color=yellow"></a>
 </p>
 
 <p align="center">
