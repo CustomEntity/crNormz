@@ -29,6 +29,7 @@ require "./all/g6_include"
 require "./all/g7_line_endings"
 require "./all/g8_trailing_spaces"
 require "./all/g9_trailing_lines"
+require "./all/f2_naming_functions"
 require "./all/f3_columns_number"
 require "./all/l4_curly_brackets"
 require "./all/v3_pointers"
@@ -56,6 +57,9 @@ TRAILING_SPACES =
   TrailingSpaces.new(CodingStyleType::G8, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Trailing Spaces", "No trailing spaces must be present at the end of a line.")
 TRAILING_LINES =
   TrailingLines.new(CodingStyleType::G9, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Trailing Lines", "No more than 1 trailing empty line must be present.")
+
+NAMING_FUNCTIONS =
+  NamingFunctions.new(CodingStyleType::F2, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Naming functions", "All function names should be in English, according to the snake_case convention (meaning that it is composed only of lowercase, numbers, and underscores)..")
 
 COLUMNS_NUMBER =
   ColumnsNumber.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
@@ -93,6 +97,7 @@ class CodingStyleManager
     @codingstyles[TRAILING_SPACES.@type] = TRAILING_SPACES
     @codingstyles[TRAILING_LINES.@type] = TRAILING_LINES
 
+    @codingstyles[NAMING_FUNCTIONS.@type] = NAMING_FUNCTIONS
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
     @codingstyles[POINTERS.@type] = POINTERS

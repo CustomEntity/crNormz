@@ -22,11 +22,11 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-#TODO: Add check for struct
-CURLY_BRACKETS_STATEMENTS_REGEX = /(}|[^\S\r\n]*)(if|for|while|switch|else|do)(\s*\(.*\)([ ]*|\))\n|[\s]*\n)[\s]*{/
-CURLY_BRACKETS_FUNCTIONS_REGEX = /^.*?\s*(unsigned|signed)?\s*([A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+((\w|\*)+)\s*\([^)]*\)[^\S\r\n]*{/m
+# TODO: Improve this regex)
+FUNCTION_NAME_REGEX             = /^.*?\s*(?:unsigned|signed)?\s*(?:[A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+((\w|\*)+)\s*\([^)]*\)/m
+SNAKE_CASE_IGNORE_POINTER_REGEX = /^[*]*[a-z]+(?:_[a-z0-9]+)*$/m
 
-class CurlyBrackets < CodingStyle
+class NamingFunctions < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
@@ -35,21 +35,23 @@ class CurlyBrackets < CodingStyle
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
     content : String = File.read(file_path)
 
-    content.scan(Regex.union(CURLY_BRACKETS_STATEMENTS_REGEX, CURLY_BRACKETS_FUNCTIONS_REGEX)).each { |match|
-      line = 1
-      curr_ch = 0
-      line_ch = 0
-      content.chars.each { |ch|
-        if curr_ch != match.end
-          line_ch += 1
-          if ch == '\n'
-            line += 1
-            line_ch = 0
+    content.scan(FUNCTION_NAME_REGEX).each { |match|
+      if match.captures[0] !~ SNAKE_CASE_IGNORE_POINTER_REGEX
+        line = 1
+        curr_ch = 0
+        line_ch = 0
+        content.chars.each { |ch|
+          if curr_ch != match.end
+            line_ch += 1
+            if ch == '\n'
+              line += 1
+              line_ch = 0
+            end
+            curr_ch += 1
           end
-          curr_ch += 1
-        end
-      }
-      errors.add(CodingStyleErrorInfo.new(self, file_path, line, line_ch))
+        }
+        errors.add(CodingStyleErrorInfo.new(self, file_path, line, line_ch))
+      end
     }
     errors
   end

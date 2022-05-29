@@ -29,7 +29,7 @@ file_manager = FileManager.new(Dir.glob("**/*"))
 options = Hash(String, String).new
 
 OptionParser.parse do |parser|
-  parser.banner = "Usage: crystal crnormz [-fgtlh]"
+  parser.banner = "Usage: crnormz [-fgtlh]"
   parser.on("-f", "--ignore-file=", "Ignore file from the checker") { |files|
     options["ignoring-files"] = files
   }
