@@ -36,12 +36,12 @@ else
   exit 1
 fi
 
-git clone "https://github.com/CustomEntity/crNormz.git"
-crystal build crNormz/src/crnormz.cr
+git clone "https://github.com/CustomEntity/crNormz.git" crNormz_
+crystal build crNormz_/src/crnormz.cr --release
 
 sudo mv crnormz /usr/local/bin/crnormz
 sudo chmod +x /usr/local/bin/crnormz
-sudo rm -rf crNormz
+sudo rm -rf crNormz_
 
 echo "=> crNormz has been installed successfully!"
 
