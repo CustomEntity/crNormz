@@ -20,14 +20,23 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+tput clear
+
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   if [ $(id -u) -ne 0 ]; then
-    echo "=> You must run this with root privileges.  Try \"sudo ./cnormz_installer.sh\""
+    echo "=> You must run this with root privileges."
+    sudo ./$0
     exit 1
   else
     echo "=> Installing crystal"
   fi
-  curl -fsSL https://crystal-lang.org/install.sh | bash
+  sudo snap install crystal --classic
+  sudo apt install libssl-dev      # for using OpenSSL
+  sudo apt install libxml2-dev     # for using XML
+  sudo apt install libyaml-dev     # for using YAML
+  sudo apt install libgmp-dev      # for using Big numbers
+  sudo apt install libz-dev        # for using crystal play
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   brew update
   brew install crystal
@@ -37,6 +46,7 @@ else
 fi
 
 git clone "https://github.com/CustomEntity/crNormz.git" crNormz_
+echo "=> Compiling crNormz.."
 crystal build crNormz_/src/crnormz.cr --release
 
 sudo mv crnormz /usr/local/bin/crnormz
