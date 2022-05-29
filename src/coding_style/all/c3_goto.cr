@@ -22,7 +22,7 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-GOTO_REGEX = /goto[^0-9a-zA-Z].*;/
+GOTO_REGEX = /goto[ \t]+[0-9a-zA-Z].*;/
 
 class Goto < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
