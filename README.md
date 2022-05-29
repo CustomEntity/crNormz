@@ -111,3 +111,4 @@ $ crnormz
 # Credits
 
  - [Moreno Flavio - Developer](https://github.com/CustomEntity/)
+ - [Kucia Guillaume - E-artsup student](https://github.com/KuciaGuillaume)]
