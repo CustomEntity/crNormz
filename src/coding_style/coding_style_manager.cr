@@ -31,6 +31,7 @@ require "./all/g8_trailing_spaces"
 require "./all/g9_trailing_lines"
 require "./all/f2_naming_functions"
 require "./all/f3_columns_number"
+require "./all/l1_code_line_content"
 require "./all/l4_curly_brackets"
 require "./all/v3_pointers"
 require "./all/c3_goto"
@@ -63,6 +64,8 @@ NAMING_FUNCTIONS =
 
 COLUMNS_NUMBER =
   ColumnsNumber.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
+CODE_LINE_CONTENT =
+  CodeLineContent.new(CodingStyleType::L1, FileType::Source.value, CodingStyleLevel::Major, "Code line content", "A line should correspond to only one statement.")
 CURLY_BRACKETS =
   CurlyBrackets.new(CodingStyleType::L4, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Curly brackets", "Opening curly brackets should be at the end of their line, except for functions where they must be placed alone on their line.")
 POINTERS =
@@ -99,6 +102,7 @@ class CodingStyleManager
 
     @codingstyles[NAMING_FUNCTIONS.@type] = NAMING_FUNCTIONS
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
+    @codingstyles[CODE_LINE_CONTENT.@type] = CODE_LINE_CONTENT
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
     @codingstyles[POINTERS.@type] = POINTERS
     @codingstyles[GOTO.@type] = GOTO

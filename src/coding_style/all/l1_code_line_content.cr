@@ -22,11 +22,9 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-#TODO: Add check for struct
-CURLY_BRACKETS_STATEMENTS_REGEX = /([\s]*}[\s]*|[\s]*)(else[\s]*if|[^\w]+if|for|while|switch|else|do)(\s*\(.*\)([ ]*|\))\n|[\s]*\n)[\s]*{/
-CURLY_BRACKETS_FUNCTIONS_REGEX = /^.*?\s*(unsigned|signed)?\s*([A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+((\w|\*)+)\s*\([^)]*\)[^\S\r\n]*{/m
+SEVERAL_ASSIGNMENT_REGEX        = /(?:[\w]*[\s]*=[\s]*[\w]*){2,}[\s]*;/m
 
-class CurlyBrackets < CodingStyle
+class CodeLineContent < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
@@ -35,9 +33,9 @@ class CurlyBrackets < CodingStyle
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
     content : String = File.read(file_path)
 
-    content.scan(Regex.union(CURLY_BRACKETS_STATEMENTS_REGEX, CURLY_BRACKETS_FUNCTIONS_REGEX)).each { |match|
-      row, column = get_row_column(File.read(file_path).split("\n"), match.end)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, row, column))
+    content.scan(SEVERAL_ASSIGNMENT_REGEX).each { |match|
+        row, column = get_row_column(File.read(file_path).split("\n"), match.begin)
+        errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (Several assignments on the same line)".magenta))
     }
     errors
   end

@@ -76,6 +76,21 @@ class CodingStyle
     puts "Handle method not implemented !"
     exit(84)
   end
+
+  def get_row_column(lines : Array(String), byte : Int32)
+    byte_remain = byte
+    line_count = 1
+
+    lines.each {|line|
+        line = line.ends_with?("\n") ? line : line + "\n"
+        if byte_remain - line.size < 0
+          return line_count, byte_remain + 1
+        end
+        byte_remain -= line.size
+        line_count += 1
+    }
+    return -1, -1
+  end
 end
 
 class CodingStyleErrorInfo

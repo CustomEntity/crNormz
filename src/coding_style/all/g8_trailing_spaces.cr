@@ -34,20 +34,8 @@ class TrailingSpaces < CodingStyle
     content : String = File.read(file_path)
 
     content.scan(TRAILING_SPACES_REGEX).each { |match|
-      line = 1
-      curr_ch = 0
-      line_ch = 0
-      content.chars.each { |ch|
-        if curr_ch - 1 != match.begin
-          curr_ch += 1
-          line_ch += 1
-          if ch == '\n'
-            line += 1
-            line_ch = 0
-          end
-        end
-      }
-      errors.add(CodingStyleErrorInfo.new(self, file_path, line, line_ch, "-#{line_ch + match[0].size}".dark_grey))
+      row, column = get_row_column(File.read(file_path).split("\n"), match.begin)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, "-#{column + match[0].size}".dark_grey))
     }
     errors
   end

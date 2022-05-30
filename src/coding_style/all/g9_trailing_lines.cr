@@ -34,17 +34,8 @@ class TrailingLines < CodingStyle
     content : String = File.read(file_path)
 
     content.scan(TRAILING_LINES_REGEX).each { |match|
-      line = 1
-      curr_ch = 0
-      content.chars.each { |ch|
-        if curr_ch != match.end
-          if ch == '\n' && curr_ch + 1 != match.end
-            line += 1
-          end
-          curr_ch += 1
-        end
-      }
-      errors.add(CodingStyleErrorInfo.new(self, file_path, curr_ch == content.size ? line + 1 : line, -1))
+      row, column = get_row_column(File.read(file_path).split("\n"), match.end)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, match.end == content.size ? row : row - 1, -1))
     }
     errors
   end

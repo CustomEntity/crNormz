@@ -34,17 +34,8 @@ class Include < CodingStyle
     content : String = File.read(file_path)
 
     content.scan(INCLUDE_REGEX).each { |match|
-      line = 1
-      curr_ch = 0
-      content.chars.each { |ch|
-        if curr_ch != match.begin
-          curr_ch += 1
-          if ch == '\n'
-            line += 1
-          end
-        end
-      }
-      errors.add(CodingStyleErrorInfo.new(self, file_path, line, -1))
+      row, column = get_row_column(File.read(file_path).split("\n"), match.begin)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1))
     }
     errors
   end

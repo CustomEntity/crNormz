@@ -34,18 +34,9 @@ class Macros < CodingStyle
     content : String = File.read(file_path)
 
     content.scan(DEFINE_MACRO_REGEX).each { |match|
-      line = 1
-      curr_ch = 0
-      content.chars.each { |ch|
-        if curr_ch != match.begin
-          curr_ch += 1
-          if ch == '\n'
-            line += 1
-          end
-        end
-      }
+    row, _ = get_row_column(File.read(file_path).split("\n"), match.begin)
       if match.captures[1].to_s.count(";") != 0
-        errors.add(CodingStyleErrorInfo.new(self, file_path, line, -1))
+        errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1))
       end
     }
     errors

@@ -22,6 +22,7 @@
 require "../coding_style"
 require "../../file/file_manager"
 
+#TODO: Added multiple pointers management
 POINTERS_REGEX = /([^(\t ]+_t|sf[a-zA-Z]*|int|signed|unsigned|char|long|short|float|double|void|const|struct [^ ]+)(\*|[ ]*\*[ ]+)/
 
 class Pointers < CodingStyle
@@ -34,20 +35,8 @@ class Pointers < CodingStyle
     content : String = File.read(file_path)
 
     content.scan(POINTERS_REGEX).each { |match|
-      line = 1
-      curr_ch = 0
-      line_ch = 0
-      content.chars.each { |ch|
-        if curr_ch - 1 != match.begin
-          curr_ch += 1
-          line_ch += 1
-          if ch == '\n'
-            line += 1
-            line_ch = 0
-          end
-        end
-      }
-      errors.add(CodingStyleErrorInfo.new(self, file_path, line, line_ch))
+      row, column = get_row_column(File.read(file_path).split("\n"), match.begin + match.captures[0].to_s.size)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, column))
     }
     errors
   end
