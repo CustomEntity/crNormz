@@ -37,6 +37,9 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
   sudo apt install libyaml-dev     # for using YAML
   sudo apt install libgmp-dev      # for using Big numbers
   sudo apt install libz-dev        # for using crystal play
+  sudo apt install gcc pkg-config git tzdata \
+                           libpcre3-dev libevent-dev libyaml-dev \
+                           libgmp-dev libssl-dev libxml2-dev
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   brew update
   brew install crystal
