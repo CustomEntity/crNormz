@@ -72,6 +72,8 @@ CODE_LINE_CONTENT =
   CodeLineContent.new(CodingStyleType::L1, FileType::Source.value, CodingStyleLevel::Major, "Code line content", "A line should correspond to only one statement.")
 CURLY_BRACKETS =
   CurlyBrackets.new(CodingStyleType::L4, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Curly brackets", "Opening curly brackets should be at the end of their line, except for functions where they must be placed alone on their line.")
+NAMING_IDENTIFIERS =
+  NamingIdentifiers.new(CodingStyleType::V3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Naming Identifiers", "All identifier names should be in English, according to the snake_case convention.")
 POINTERS =
   Pointers.new(CodingStyleType::V3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Pointers", "The pointer symbol (*) should be attached to the associated variable, with no spaces.")
 GOTO =
@@ -109,6 +111,7 @@ class CodingStyleManager
     @codingstyles[ARGUMENTS.@type] = ARGUMENTS
     @codingstyles[CODE_LINE_CONTENT.@type] = CODE_LINE_CONTENT
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
+    # @codingstyles[NAMING_IDENTIFIERS.@type] = NAMING_IDENTIFIERS
     @codingstyles[POINTERS.@type] = POINTERS
     @codingstyles[GOTO.@type] = GOTO
     @codingstyles[LINE_BREAK.@type] = LINE_BREAK
@@ -116,25 +119,17 @@ class CodingStyleManager
     @codingstyles[MACROS.@type] = MACROS
   end
 
-  def apply_check_on(codingstyle : CodingStyle, file_path : String, options : Hash(String, String))
-    file = File.open(file_path)
-
+  def apply_check_on(codingstyle : CodingStyle, file_path : String, content : String, options : Hash(String, String))
     curr_errors : Set(CodingStyleErrorInfo)
     if (@errors.has_key?(codingstyle.@type))
       curr_errors = @errors[codingstyle.@type]
     else
       curr_errors = Set(CodingStyleErrorInfo).new
     end
-
-    content = ""
-    if get_file_type(file_path) != FileType::Directory
-        content = File.read(file_path)
-    end
     new_errors : Set(CodingStyleErrorInfo) = codingstyle.handle(file_path, content, options)
     new_errors.each { |err|
       curr_errors.add(err)
     }
     @errors[codingstyle.@type] = curr_errors
-    file.close
   end
 end

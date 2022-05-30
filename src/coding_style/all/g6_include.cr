@@ -32,7 +32,6 @@ class Include < CodingStyle
   def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
-
     content.scan(INCLUDE_REGEX).each { |match|
       row, column = get_row_column(content.split("\n"), match.begin)
       errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1))

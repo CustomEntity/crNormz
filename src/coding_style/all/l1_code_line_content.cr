@@ -33,7 +33,6 @@ class CodeLineContent < CodingStyle
   def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
-
     content.scan(SEVERAL_ASSIGNMENT_REGEX).each { |match|
       row, column = get_row_column(content.split("\n"), match.begin)
       errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (Several assignments on the same line)".magenta))

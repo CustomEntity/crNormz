@@ -22,9 +22,7 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-TRAILING_SPACES_REGEX = /([ \t]+$)/m
-
-class TrailingSpaces < CodingStyle
+class NamingIdentifiers < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
@@ -32,9 +30,9 @@ class TrailingSpaces < CodingStyle
   def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
-    content.scan(TRAILING_SPACES_REGEX).each { |match|
-      row, column = get_row_column(content.split("\n"), match.begin)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, "-#{column + match[0].size}".dark_grey))
+    content.scan(POINTERS_REGEX).each { |match|
+      row, column = get_row_column(content.split("\n"), match.begin + match.captures[0].to_s.size)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, column))
     }
     errors
   end

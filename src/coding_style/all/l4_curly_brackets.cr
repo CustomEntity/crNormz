@@ -22,9 +22,9 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-#TODO: Add check for struct
+# TODO: Add check for struct
 CURLY_BRACKETS_STATEMENTS_REGEX = /([\s]*}[\s]*|[\s]*)(else[\s]*if|[^\w]+if|for|while|switch|else|do)(\s*\(.*\)([ ]*|\))\n|[\s]*\n)[\s]*{/
-CURLY_BRACKETS_FUNCTIONS_REGEX = /^.*?\s*(unsigned|signed)?\s*([A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+((\w|\*)+)\s*\([^)]*\)[^\S\r\n]*{/m
+CURLY_BRACKETS_FUNCTIONS_REGEX  = /^.*?\s*(unsigned|signed)?\s*([A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+((\w|\*)+)\s*\([^)]*\)[^\S\r\n]*{/m
 
 class CurlyBrackets < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
@@ -33,7 +33,6 @@ class CurlyBrackets < CodingStyle
 
   def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-
 
     content.scan(Regex.union(CURLY_BRACKETS_STATEMENTS_REGEX, CURLY_BRACKETS_FUNCTIONS_REGEX)).each { |match|
       row, column = get_row_column(content.split("\n"), match.end)
