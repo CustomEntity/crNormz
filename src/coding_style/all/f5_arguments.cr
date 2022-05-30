@@ -22,9 +22,10 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-DEFINE_MACRO_REGEX = /#define[ \t]*(.+?\)[ \t]*|[a-zA-Z0-9]*[ \t]*)(.*)/
+NO_VOID_ARG_REGEX  = /^.*(?!\s\n)*(unsigned|signed)?[^\n\s]*([A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double|bool)\s+((?:\w|\*)+)\s*\(\)[ \n]*({|;)/m
+TOO_MANY_ARG_REGEX = /\((?:[^(),]*,){4,}[^()]*\)[ \t\n]+{/
 
-class Macros < CodingStyle
+class Arguments < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
@@ -32,11 +33,13 @@ class Macros < CodingStyle
   def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
-    content.scan(DEFINE_MACRO_REGEX).each { |match|
-    row, _ = get_row_column(File.read(file_path).split("\n"), match.begin)
-      if match.captures[1].to_s.count(";") != 0
-        errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1))
-      end
+    content.scan(NO_VOID_ARG_REGEX).each { |match|
+      row, _ = get_row_column(content.split("\n"), match.end)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1, " (A function taking no parameters should take void as argument)".magenta))
+    }
+    content.scan(TOO_MANY_ARG_REGEX).each { |match|
+      row, _ = get_row_column(content.split("\n"), match.begin)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1, " (A function should not need more than 4 arguments)".magenta))
     }
     errors
   end

@@ -31,26 +31,14 @@ class NamingFunctions < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    content : String = File.read(file_path)
+
 
     content.scan(FUNCTION_NAME_REGEX).each { |match|
       if match.captures[0] !~ SNAKE_CASE_IGNORE_POINTER_REGEX
-        line = 1
-        curr_ch = 0
-        line_ch = 0
-        content.chars.each { |ch|
-          if curr_ch != match.end
-            line_ch += 1
-            if ch == '\n'
-              line += 1
-              line_ch = 0
-            end
-            curr_ch += 1
-          end
-        }
-        errors.add(CodingStyleErrorInfo.new(self, file_path, line, line_ch))
+        row, column = get_row_column(content.split("\n"), match.end)
+        errors.add(CodingStyleErrorInfo.new(self, file_path, row, column))
       end
     }
     errors

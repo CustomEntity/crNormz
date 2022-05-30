@@ -30,9 +30,9 @@ class CodeLineContent < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    content : String = File.read(file_path)
+
 
     content.scan(SEVERAL_ASSIGNMENT_REGEX).each { |match|
       row, column = get_row_column(content.split("\n"), match.begin)

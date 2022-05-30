@@ -30,22 +30,13 @@ class FunctionSeparation < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    content : String = File.read(file_path)
+
 
     content.scan(FUNCTION_SEPARATION_REGEX).each { |match|
-      line = 1
-      curr_ch = 0
-      content.chars.each { |ch|
-        if curr_ch != match.begin
-          curr_ch += 1
-          if ch == '\n'
-            line += 1
-          end
-        end
-      }
-      errors.add(CodingStyleErrorInfo.new(self, file_path, line, -1))
+    row, _ = get_row_column(content.split("\n"), match.begin)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1))
     }
     errors
   end

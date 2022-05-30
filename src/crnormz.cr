@@ -23,6 +23,7 @@ require "./utils/string_utils"
 require "./file/file_manager"
 require "./coding_style/coding_style_manager"
 require "option_parser"
+require "benchmark"
 
 codingstyle_manager = CodingStyleManager.new
 file_manager = FileManager.new(Dir.glob("**/*"))

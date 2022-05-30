@@ -30,10 +30,10 @@ class FileHeader < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
-    content : String = File.read(file_path)
+
     file_type : FileType = get_file_type(file_path)
 
     if file_type == FileType::Source || file_type == FileType::Header

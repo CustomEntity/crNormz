@@ -72,7 +72,7 @@ class CodingStyle
     @errors = Set(CodingStyleErrorInfo).new
   end
 
-  def handle(file_path : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     puts "Handle method not implemented !"
     exit(84)
   end
