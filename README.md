@@ -91,11 +91,11 @@ $ crnormz
 | <img src="assets/readme/major.png" width="16" vertical-align="middle"/> F2             |             Function name not in <i>snake_case</i>             |    <font style="color: green; font-size: 16px;">✓</font>    |
 | <img src="assets/readme/major.png" width="16" vertical-align="middle"/> F3             |                Too many columns (> 80 columns)                 |    <font style="color: green; font-size: 16px;">✓</font>    |
 | <img src="assets/readme/major.png" width="16" vertical-align="middle"/> F4             |            Too many lines in function (> 20 lines)             |   <font style="font-size: 16px;">🔨</font>    |
-| <img src="assets/readme/major.png" width="16" vertical-align="middle"/> F5             |        Too many parameters in function (> 4 parameters)        |   <font style="font-size: 16px;">🔨</font>    |
+| <img src="assets/readme/major.png" width="16" vertical-align="middle"/> F5             |        Too many parameters in function (> 4 parameters)        |   <font style="color: green; font-size: 16px;">✓</font>    |
 | <img src="assets/readme/major.png" width="16" vertical-align="middle"/> F5             | Missing 'void' parameter in case of function without arguments |   <font style="font-size: 16px;">🔨</font>    |
 | <img src="assets/readme/minor.png" width="16" vertical-align="middle"/> F6             |                   Comments within a function                   |   <font style="font-size: 16px;">🔨</font>    |
 | <img src="assets/readme/major.png" width="16" vertical-align="middle"/> F7             |                        Nested functions                        |   <font style="font-size: 16px;">🔨</font>    |
-| <img src="assets/readme/minor.png" width="16" vertical-align="middle"/> L1             |             Multiple assignments on the same line              |   <font style="font-size: 16px;">🔨</font>    |
+| <img src="assets/readme/minor.png" width="16" vertical-align="middle"/> L1             |             Multiple assignments on the same line              |   <font style="color: green; font-size: 16px;">✓</font>    |
 | <img src="assets/readme/minor.png" width="16" vertical-align="middle"/> L2             |                        Bad indentation                         |   <font style="font-size: 16px;">🔨</font>    |
 | <img src="assets/readme/minor.png" width="16" vertical-align="middle"/> L3             |                 Missing space after a keyword                  |   <font style="font-size: 16px;">🔨</font>    |
 | <img src="assets/readme/major.png" width="16" vertical-align="middle"/> L4             |                       Misplaced bracket                        |    <font style="color: green; font-size: 16px;">✓</font>    |
