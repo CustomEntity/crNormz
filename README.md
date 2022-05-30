@@ -72,6 +72,8 @@ $ crnormz
 
 ## Features
 
+<h3>⚠️ crNormz does not support comments and quotes at the moment</h3>
+
 | Type                                                                                   |                          Description                           |                            State                            |
 |----------------------------------------------------------------------------------------|:--------------------------------------------------------------:|:-----------------------------------------------------------:|
 | <img src="assets/readme/major.png" width="16" vertical-align="middle"/> O1             |                  Useless file for compilation                  |    <font style="color: green; font-size: 16px;">✓</font>    |
