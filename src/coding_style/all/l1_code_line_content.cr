@@ -22,7 +22,8 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-SEVERAL_ASSIGNMENT_REGEX        = /(?:[\w]*[\s]*=[\s]*[\w]*){2,}[\s]*;/m
+SEVERAL_ASSIGNMENT_REGEX = /(?:[\w]*[\s]*=[\s]*[\w]*){2,}[\s]*;/m
+SEVERAL_SEMI_COLONS      = /\s*(?:.*;.*){2,}/
 
 class CodeLineContent < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
@@ -34,8 +35,14 @@ class CodeLineContent < CodingStyle
     content : String = File.read(file_path)
 
     content.scan(SEVERAL_ASSIGNMENT_REGEX).each { |match|
-        row, column = get_row_column(File.read(file_path).split("\n"), match.begin)
-        errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (Several assignments on the same line)".magenta))
+      row, column = get_row_column(content.split("\n"), match.begin)
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (Several assignments on the same line)".magenta))
+    }
+    content.scan(SEVERAL_SEMI_COLONS).each { |match|
+      if match[0] !~ /#define|for[\s]*\(/
+        row, _ = get_row_column(content.split("\n"), match.begin)
+        errors.add(CodingStyleErrorInfo.new(self, file_path, row + 1, -1, " (Several semi-colons on the same line)".magenta))
+      end
     }
     errors
   end

@@ -35,7 +35,7 @@ class Pointers < CodingStyle
     content : String = File.read(file_path)
 
     content.scan(POINTERS_REGEX).each { |match|
-      row, column = get_row_column(File.read(file_path).split("\n"), match.begin + match.captures[0].to_s.size)
+      row, column = get_row_column(content.split("\n"), match.begin + match.captures[0].to_s.size)
       errors.add(CodingStyleErrorInfo.new(self, file_path, row, column))
     }
     errors
