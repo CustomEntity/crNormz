@@ -89,7 +89,7 @@ class CodingStyleManager
   def initialize
     @codingstyles = Hash(CodingStyleType, CodingStyle).new
     @errors = Hash(CodingStyleType, Set(CodingStyleErrorInfo)).new
-    @file_cache = Hash(String, String).new
+
     self.load_all_codingstyles
   end
 
@@ -128,11 +128,7 @@ class CodingStyleManager
 
     content = ""
     if get_file_type(file_path) != FileType::Directory
-      if @file_cache.has_key?(file_path)
-        content = @file_cache[file_path]
-      else
         content = File.read(file_path)
-      end
     end
     new_errors : Set(CodingStyleErrorInfo) = codingstyle.handle(file_path, content, options)
     new_errors.each { |err|

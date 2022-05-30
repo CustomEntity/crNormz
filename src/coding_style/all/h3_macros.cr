@@ -33,7 +33,7 @@ class Macros < CodingStyle
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
     content.scan(DEFINE_MACRO_REGEX).each { |match|
-    row, _ = get_row_column(File.read(file_path).split("\n"), match.begin)
+    row, _ = get_row_column(content.split("\n"), match.begin)
       if match.captures[1].to_s.count(";") != 0
         errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1))
       end

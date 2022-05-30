@@ -34,7 +34,7 @@ class TrailingSpaces < CodingStyle
 
 
     content.scan(TRAILING_SPACES_REGEX).each { |match|
-      row, column = get_row_column(File.read(file_path).split("\n"), match.begin)
+      row, column = get_row_column(content.split("\n"), match.begin)
       errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, "-#{column + match[0].size}".dark_grey))
     }
     errors

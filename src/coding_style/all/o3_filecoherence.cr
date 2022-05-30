@@ -32,7 +32,7 @@ class FileCoherence < CodingStyle
 
   def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    lines = File.read(file_path).split("\n").map {|line| line + "\n"}
+    lines = content.split("\n").map {|line| line + "\n"}
     function_count : Int32 = 0
     curr_line = 1
 

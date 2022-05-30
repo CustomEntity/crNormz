@@ -34,7 +34,7 @@ class Include < CodingStyle
 
 
     content.scan(INCLUDE_REGEX).each { |match|
-      row, column = get_row_column(File.read(file_path).split("\n"), match.begin)
+      row, column = get_row_column(content.split("\n"), match.begin)
       errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1))
     }
     errors
