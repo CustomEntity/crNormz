@@ -34,6 +34,7 @@ require "./all/f3_columns_number"
 require "./all/f5_arguments"
 require "./all/l1_code_line_content"
 require "./all/l4_curly_brackets"
+require "./all/v1_naming_identifiers"
 require "./all/v3_pointers"
 require "./all/c3_goto"
 require "./all/a3_line_break"
@@ -73,7 +74,7 @@ CODE_LINE_CONTENT =
 CURLY_BRACKETS =
   CurlyBrackets.new(CodingStyleType::L4, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Curly brackets", "Opening curly brackets should be at the end of their line, except for functions where they must be placed alone on their line.")
 NAMING_IDENTIFIERS =
-  NamingIdentifiers.new(CodingStyleType::V3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Naming Identifiers", "All identifier names should be in English, according to the snake_case convention.")
+  NamingIdentifiers.new(CodingStyleType::V1, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Naming Identifiers", "All identifier names should be in English, according to the snake_case convention.")
 POINTERS =
   Pointers.new(CodingStyleType::V3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Pointers", "The pointer symbol (*) should be attached to the associated variable, with no spaces.")
 GOTO =
@@ -111,7 +112,7 @@ class CodingStyleManager
     @codingstyles[ARGUMENTS.@type] = ARGUMENTS
     @codingstyles[CODE_LINE_CONTENT.@type] = CODE_LINE_CONTENT
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
-    # @codingstyles[NAMING_IDENTIFIERS.@type] = NAMING_IDENTIFIERS
+    @codingstyles[NAMING_IDENTIFIERS.@type] = NAMING_IDENTIFIERS
     @codingstyles[POINTERS.@type] = POINTERS
     @codingstyles[GOTO.@type] = GOTO
     @codingstyles[LINE_BREAK.@type] = LINE_BREAK
