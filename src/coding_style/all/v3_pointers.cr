@@ -22,8 +22,7 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-# TODO: Added multiple pointers management
-POINTERS_REGEX = /([^(\t ]+_t|sf[a-zA-Z]*|int|signed|unsigned|char|long|short|float|double|void|const|struct [^ ]+)(\*|[ ]*\*[ ]+)/
+POINTERS_REGEX = /([^(\t ]+_t|sf[a-zA-Z]*|int|signed|unsigned|char|long|short|float|double|void|const|struct [^ ]+)(\*|[ ]*\*+[ ]+)/
 
 class Pointers < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
