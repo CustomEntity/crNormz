@@ -25,6 +25,7 @@ require "./all/o3_filecoherence"
 require "./all/o4_namingfileandfolders"
 require "./all/g1_fileheader"
 require "./all/g2_functions_separation"
+require "./all/g3_indent_prep_dir"
 require "./all/g6_include"
 require "./all/g7_line_endings"
 require "./all/g8_trailing_spaces"
@@ -53,6 +54,8 @@ FILE_HEADER =
   FileHeader.new(CodingStyleType::G1, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "File Header", "The source files (.c,.h, Makefile,...) should always start with the standard header of the school.")
 FUNCTION_SEPARATION =
   FunctionSeparation.new(CodingStyleType::G2, FileType::Source.value, CodingStyleLevel::Minor, "Separation of functions", "Inside a source file, one and only one empty line should separate the implementations of functions.")
+INDENT_PREP_DIR =
+  IndentPrepDir.new(CodingStyleType::G3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Indentation of preprocessor directives", "The preprocessor directives should be indented according to the level of indirection.")
 INCLUDE =
   Include.new(CodingStyleType::G6, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Include", "Include directive should only include header .h files.")
 LINE_ENDINGS =
@@ -102,6 +105,7 @@ class CodingStyleManager
     @codingstyles[NAMING_FILE_AND_FOLDERS.@type] = NAMING_FILE_AND_FOLDERS
     @codingstyles[FILE_HEADER.@type] = FILE_HEADER
     @codingstyles[FUNCTION_SEPARATION.@type] = FUNCTION_SEPARATION
+    @codingstyles[INDENT_PREP_DIR.@type] = INDENT_PREP_DIR
     @codingstyles[INCLUDE.@type] = INCLUDE
     @codingstyles[LINE_ENDINGS.@type] = LINE_ENDINGS
     @codingstyles[TRAILING_SPACES.@type] = TRAILING_SPACES
