@@ -32,6 +32,7 @@ require "./all/g8_trailing_spaces"
 require "./all/g9_trailing_lines"
 require "./all/f2_naming_functions"
 require "./all/f3_columns_number"
+require "./all/f4_lines_number"
 require "./all/f5_arguments"
 require "./all/l1_code_line_content"
 require "./all/l4_curly_brackets"
@@ -70,6 +71,8 @@ NAMING_FUNCTIONS =
 
 COLUMNS_NUMBER =
   ColumnsNumber.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
+LINES_NUMBER =
+  LinesNumber.new(CodingStyleType::F4, FileType::Source.value, CodingStyleLevel::Major, "Number of Lines", "The body of a function should not exceeds 20 lines.")
 ARGUMENTS =
   Arguments.new(CodingStyleType::F5, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Arguments", "The statement of arguments should be in accordance to the ISO/ANSI C syntax.")
 CODE_LINE_CONTENT =
@@ -113,6 +116,7 @@ class CodingStyleManager
 
     @codingstyles[NAMING_FUNCTIONS.@type] = NAMING_FUNCTIONS
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
+    @codingstyles[LINES_NUMBER.@type] = LINES_NUMBER
     @codingstyles[ARGUMENTS.@type] = ARGUMENTS
     @codingstyles[CODE_LINE_CONTENT.@type] = CODE_LINE_CONTENT
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
