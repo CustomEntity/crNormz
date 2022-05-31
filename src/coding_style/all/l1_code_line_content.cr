@@ -42,7 +42,7 @@ class CodeLineContent < CodingStyle
     }
     content.scan(CONDITION_AND_ASSIGNMENT_REGEX).each { |match|
       row, _ = get_row_column(content.split("\n"), match.begin)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, row, _, " (Condition and an assignment on the same line)".magenta))
+      errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1, " (Condition and an assignment on the same line)".magenta))
     }
     content.scan(SEVERAL_SEMI_COLONS).each { |match|
       if match[0] !~ /#define|for[\s]*\(/
