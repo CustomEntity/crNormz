@@ -34,6 +34,7 @@ require "./all/f2_naming_functions"
 require "./all/f3_columns_number"
 require "./all/f4_lines_number"
 require "./all/f5_arguments"
+require "./all/f6_comment_in_func"
 require "./all/l1_code_line_content"
 require "./all/l4_curly_brackets"
 require "./all/v1_naming_identifiers"
@@ -75,6 +76,8 @@ LINES_NUMBER =
   LinesNumber.new(CodingStyleType::F4, FileType::Source.value, CodingStyleLevel::Major, "Number of Lines", "The body of a function should not exceeds 20 lines.")
 ARGUMENTS =
   Arguments.new(CodingStyleType::F5, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Arguments", "The statement of arguments should be in accordance to the ISO/ANSI C syntax.")
+COMMENT_IN_FUNC =
+  CommentInFunc.new(CodingStyleType::F6, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Comments inside a function", "There should be no comment within a function.")
 CODE_LINE_CONTENT =
   CodeLineContent.new(CodingStyleType::L1, FileType::Source.value, CodingStyleLevel::Major, "Code line content", "A line should correspond to only one statement.")
 CURLY_BRACKETS =
@@ -118,6 +121,7 @@ class CodingStyleManager
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
     @codingstyles[LINES_NUMBER.@type] = LINES_NUMBER
     @codingstyles[ARGUMENTS.@type] = ARGUMENTS
+    @codingstyles[COMMENT_IN_FUNC.@type] = COMMENT_IN_FUNC
     @codingstyles[CODE_LINE_CONTENT.@type] = CODE_LINE_CONTENT
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
     @codingstyles[NAMING_IDENTIFIERS.@type] = NAMING_IDENTIFIERS
