@@ -22,8 +22,8 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-#TODO: Condition and assignment on the same line
-SEVERAL_ASSIGNMENT_REGEX = /(?:[\w]*[\s]*=[\s]*[\w]*){2,}[\s]*;/m
+# TODO: Condition and assignment on the same line
+SEVERAL_ASSIGNMENT_REGEX = /([\w].*[\s]*=[\s]*[\w]*){2,}.*;/
 SEVERAL_SEMI_COLONS      = /\s*(?:.*;.*){2,}/
 
 class CodeLineContent < CodingStyle
@@ -35,8 +35,10 @@ class CodeLineContent < CodingStyle
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
     content.scan(SEVERAL_ASSIGNMENT_REGEX).each { |match|
-      row, column = get_row_column(content.split("\n"), match.begin)
-      errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (Several assignments on the same line)".magenta))
+      if match[0] !~ /#define|for[\s]*\(/
+        row, column = get_row_column(content.split("\n"), match.begin)
+        errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (Several assignments on the same line)".magenta))
+      end
     }
     content.scan(SEVERAL_SEMI_COLONS).each { |match|
       if match[0] !~ /#define|for[\s]*\(/
