@@ -59,9 +59,13 @@ file_manager.@files.each { |file_path|
   if get_file_type(file_path) != FileType::Directory
     content = File.read(file_path)
   end
+  if options.has_key?("ignoring-files") && options["ignoring-files"].split(",").count { |s| s == file_path } != 0
+    next
+  end
   codingstyle_manager.@codingstyles.each_value { |codingstyle|
-    if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) &&
-       !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0)
+    if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) \
+      && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) \
+      && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s == codingstyle.@level.to_s } != 0)
       # TODO: Add check for options
       codingstyle_manager.apply_check_on(codingstyle, file_path, content, options)
     end

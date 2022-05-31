@@ -22,6 +22,7 @@
 require "../coding_style"
 require "../../file/file_manager"
 
+#TODO: Condition and assignment on the same line
 SEVERAL_ASSIGNMENT_REGEX = /(?:[\w]*[\s]*=[\s]*[\w]*){2,}[\s]*;/m
 SEVERAL_SEMI_COLONS      = /\s*(?:.*;.*){2,}/
 
