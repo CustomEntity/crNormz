@@ -35,14 +35,13 @@ class LinesNumber < CodingStyle
 
     content.scan(FUNCTION_DECLARATION_REGEX).each { |match|
       row, _ = self.get_row_column(splitted_content, match.end)
-      indent_level = 0
+      indent_level = 1
       line_count = 0
 
       (row...splitted_content.size).each { |i|
-        if splitted_content[i] =~ /{/
-          indent_level += 1
-        elsif splitted_content[i] =~ /}/
-          indent_level -= 1
+        indent_level += splitted_content[i].count("{")
+        if splitted_content[i] =~ /}/
+          indent_level -= splitted_content[i].count("}")
           if indent_level <= 0
             break
           end
