@@ -59,7 +59,7 @@ file_manager.@files.each { |file_path|
   if get_file_type(file_path) != FileType::Directory
     content = File.read(file_path)
   end
-  if options.has_key?("ignoring-files") && options["ignoring-files"].split(",").count { |s| s == file_path } != 0
+  if options.has_key?("ignoring-files") && Regex.new(options["ignoring-files"]).match(file_path)
     next
   end
   codingstyle_manager.@codingstyles.each_value { |codingstyle|

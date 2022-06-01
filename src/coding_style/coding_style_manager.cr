@@ -40,6 +40,7 @@ require "./all/l2_indent"
 require "./all/l4_curly_brackets"
 require "./all/v1_naming_identifiers"
 require "./all/v3_pointers"
+require "./all/c1_conditional_branching"
 require "./all/c3_goto"
 require "./all/a3_line_break"
 require "./all/h2_include_guard"
@@ -67,10 +68,8 @@ TRAILING_SPACES =
   TrailingSpaces.new(CodingStyleType::G8, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Trailing Spaces", "No trailing spaces must be present at the end of a line.")
 TRAILING_LINES =
   TrailingLines.new(CodingStyleType::G9, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Trailing Lines", "No more than 1 trailing empty line must be present.")
-
 NAMING_FUNCTIONS =
   NamingFunctions.new(CodingStyleType::F2, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Naming functions", "All function names should be in English, according to the snake_case convention (meaning that it is composed only of lowercase, numbers, and underscores)..")
-
 COLUMNS_NUMBER =
   ColumnsNumber.new(CodingStyleType::F3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Major, "Number of columns", "The length of a line should not exceed 80 columns (not to be confused with 80 characters!).")
 LINES_NUMBER =
@@ -89,12 +88,12 @@ NAMING_IDENTIFIERS =
   NamingIdentifiers.new(CodingStyleType::V1, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Naming Identifiers", "All identifier names should be in English, according to the snake_case convention.")
 POINTERS =
   Pointers.new(CodingStyleType::V3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Pointers", "The pointer symbol (*) should be attached to the associated variable, with no spaces.")
+CONDITIONAL_BRANCHING =
+  ConditionalBranching.new(CodingStyleType::C1, FileType::Source.value, CodingStyleLevel::Minor, "Conditional Branching", "A conditionnal block (while, for, if, else, ...) should not contain more than 3 branchings.")
 GOTO =
   Goto.new(CodingStyleType::C3, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Goto", "Est-ce que ta déjà léché les deux boules d'un goto ?")
-
 LINE_BREAK =
   LineBreak.new(CodingStyleType::A3, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Info, "Line break at the end of file", "Files should end with a line break.")
-
 INCLUDE_GUARD =
   IncludeGuard.new(CodingStyleType::H2, FileType::Header.value, CodingStyleLevel::Minor, "Include Guard", "Headers should be protected from double inclusion.")
 MACROS =
@@ -119,7 +118,6 @@ class CodingStyleManager
     @codingstyles[LINE_ENDINGS.@type] = LINE_ENDINGS
     @codingstyles[TRAILING_SPACES.@type] = TRAILING_SPACES
     @codingstyles[TRAILING_LINES.@type] = TRAILING_LINES
-
     @codingstyles[NAMING_FUNCTIONS.@type] = NAMING_FUNCTIONS
     @codingstyles[COLUMNS_NUMBER.@type] = COLUMNS_NUMBER
     @codingstyles[LINES_NUMBER.@type] = LINES_NUMBER
@@ -130,6 +128,7 @@ class CodingStyleManager
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
     @codingstyles[NAMING_IDENTIFIERS.@type] = NAMING_IDENTIFIERS
     @codingstyles[POINTERS.@type] = POINTERS
+    #@codingstyles[CONDITIONAL_BRANCHING.@type] = CONDITIONAL_BRANCHING
     @codingstyles[GOTO.@type] = GOTO
     @codingstyles[LINE_BREAK.@type] = LINE_BREAK
     @codingstyles[INCLUDE_GUARD.@type] = INCLUDE_GUARD
