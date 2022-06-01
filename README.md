@@ -49,7 +49,7 @@ $ git clone https://github.com/CustomEntity/crNormz
 $ cd crNormz
 
 # Install the norminette
-$ sudo ./cnormz_installer.sh
+$ sudo ./crnormz_installer.sh
 
 ```
 
