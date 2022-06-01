@@ -31,15 +31,19 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
   else
     echo "=> Installing crystal"
   fi
-  sudo snap install crystal --classic
-  sudo apt install libssl-dev      # for using OpenSSL
-  sudo apt install libxml2-dev     # for using XML
-  sudo apt install libyaml-dev     # for using YAML
-  sudo apt install libgmp-dev      # for using Big numbers
-  sudo apt install libz-dev        # for using crystal play
-  sudo apt install gcc pkg-config git tzdata \
-                           libpcre3-dev libevent-dev libyaml-dev \
-                           libgmp-dev libssl-dev libxml2-dev
+  if [[ $(cat /etc/*release | grep "^ID=" | cut -c 4-) == "fedora" ]]; then
+    curl -fsSL https://crystal-lang.org/install.sh | sudo bash
+  else
+    sudo snap install crystal --classic
+    sudo apt install libssl-dev  # for using OpenSSL
+    sudo apt install libxml2-dev # for using XML
+    sudo apt install libyaml-dev # for using YAML
+    sudo apt install libgmp-dev  # for using Big numbers
+    sudo apt install libz-dev    # for using crystal play
+    sudo apt install gcc pkg-config git tzdata \
+      libpcre3-dev libevent-dev libyaml-dev \
+      libgmp-dev libssl-dev libxml2-dev
+  fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   brew update
   brew install crystal
@@ -57,4 +61,3 @@ sudo chmod +x /usr/local/bin/crnormz
 sudo rm -rf crNormz_
 
 echo "=> crNormz has been installed successfully!"
-
