@@ -36,6 +36,7 @@ require "./all/f4_lines_number"
 require "./all/f5_arguments"
 require "./all/f6_comment_in_func"
 require "./all/l1_code_line_content"
+require "./all/l2_indent"
 require "./all/l4_curly_brackets"
 require "./all/v1_naming_identifiers"
 require "./all/v3_pointers"
@@ -80,6 +81,8 @@ COMMENT_IN_FUNC =
   CommentInFunc.new(CodingStyleType::F6, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Comments inside a function", "There should be no comment within a function.")
 CODE_LINE_CONTENT =
   CodeLineContent.new(CodingStyleType::L1, FileType::Source.value, CodingStyleLevel::Major, "Code line content", "A line should correspond to only one statement.")
+INDENT =
+  Indent.new(CodingStyleType::L2, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Indentation", "Each indentation level must be done by using 4 spaces. When entering a new scope the indentation level must be incremented.")
 CURLY_BRACKETS =
   CurlyBrackets.new(CodingStyleType::L4, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Curly brackets", "Opening curly brackets should be at the end of their line, except for functions where they must be placed alone on their line.")
 NAMING_IDENTIFIERS =
@@ -123,6 +126,7 @@ class CodingStyleManager
     @codingstyles[ARGUMENTS.@type] = ARGUMENTS
     @codingstyles[COMMENT_IN_FUNC.@type] = COMMENT_IN_FUNC
     @codingstyles[CODE_LINE_CONTENT.@type] = CODE_LINE_CONTENT
+    @codingstyles[INDENT.@type] = INDENT
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
     @codingstyles[NAMING_IDENTIFIERS.@type] = NAMING_IDENTIFIERS
     @codingstyles[POINTERS.@type] = POINTERS
