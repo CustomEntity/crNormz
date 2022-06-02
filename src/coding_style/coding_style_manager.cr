@@ -128,7 +128,7 @@ class CodingStyleManager
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
     @codingstyles[NAMING_IDENTIFIERS.@type] = NAMING_IDENTIFIERS
     @codingstyles[POINTERS.@type] = POINTERS
-    #@codingstyles[CONDITIONAL_BRANCHING.@type] = CONDITIONAL_BRANCHING
+    @codingstyles[CONDITIONAL_BRANCHING.@type] = CONDITIONAL_BRANCHING
     @codingstyles[GOTO.@type] = GOTO
     @codingstyles[LINE_BREAK.@type] = LINE_BREAK
     @codingstyles[INCLUDE_GUARD.@type] = INCLUDE_GUARD
