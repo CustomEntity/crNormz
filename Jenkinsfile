@@ -12,10 +12,15 @@ pipeline {
         }
 
         stage('Unit Testing') {
-            stages {
+            parallel {
                 stage('O1 - Contents of the Delivery Folder') {
                     steps {
                         sh "echo 'toto'"
+                    }
+                }
+                stage('O3 - File Coherence') {
+                    steps {
+                        sh "echo 'tutu'"
                     }
                 }
             }
