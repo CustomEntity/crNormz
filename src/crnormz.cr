@@ -43,6 +43,9 @@ OptionParser.parse do |parser|
   parser.on("-l", "--ignore-level=", "Ignore errors of a specific level (Major, Minor or Info)") { |levels|
     options["ignoring-levels"] = levels
   }
+  parser.on("-r", "--raw-output", "Enables easy parsing for applications") { |levels|
+    options["raw-output"] = ""
+  }
   parser.on("-h", "--help", "Show this help") do
     puts parser
     exit
@@ -63,16 +66,15 @@ file_manager.@files.each { |file_path|
     next
   end
   codingstyle_manager.@codingstyles.each_value { |codingstyle|
-    if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) \
-      && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) \
-      && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s == codingstyle.@level.to_s } != 0)
+    if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s.downcase() == codingstyle.@level.to_s.downcase() } != 0)
       # TODO: Add check for options
       codingstyle_manager.apply_check_on(codingstyle, file_path, content, options)
     end
   }
 }
 
-puts "
+if !options.has_key?("raw-output")
+  puts "
               __
   ___ _ __ /\\ \\ \\___  _ __ _ __ ___  ____
  / __| '__/  \\/ / _ \\| '__| '_ ` _ \\|_  /
@@ -80,6 +82,7 @@ puts "
  \\___|_| \\_\\ \\/ \\___/|_|  |_| |_| |_/___|
 
 ".red.bold
+end
 
 has_value : Bool = false
 codingstyle_manager.@errors.each { |key, value|
@@ -88,29 +91,15 @@ codingstyle_manager.@errors.each { |key, value|
   }
 }
 
-unless has_value
-  puts " #{"➥"} #{" No coding style error ! Good job my boy".light_green}"
-else
-  print "#{"Major".light_red} • #{"Minor".light_green} • #{"Info".light_blue}"
-  puts
+major = 0
+minor = 0
+info = 0
 
-  major = 0
-  minor = 0
-  info = 0
-
+if options.has_key?("raw-output") && has_value
   codingstyle_manager.@errors.each { |key, value|
     if value.size != 0
-      puts
-      if codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Major
-        puts " ‣ #{"(#{key})".light_red} - #{codingstyle_manager.@codingstyles[key].@desc}"
-      elsif codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Minor
-        puts " ‣ #{"(#{key})".light_green} - #{codingstyle_manager.@codingstyles[key].@desc}"
-      elsif codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Info
-        puts " ‣ #{"(#{key})".light_blue} - #{codingstyle_manager.@codingstyles[key].@desc}"
-      end
-      puts
       codingstyle_manager.@errors[key].each { |error|
-        puts "      • #{error.@file_path.dark_grey}#{error.@row != -1 ? ":#{error.@row}".dark_grey : ""}#{error.@column != -1 ? ":#{error.@column}".dark_grey : ""}#{error.@additional_info}"
+        puts "#{error.@codingstyle.@type};#{error.@file_path.dark_grey};#{error.@row};#{error.@column}";#{error.@additional_info}"
 
         if error.@codingstyle.@level == CodingStyleLevel::Major
           major += 1
@@ -122,7 +111,40 @@ else
       }
     end
   }
+  puts "#{major};#{minor};#{info}"
+else
+  unless has_value
+    puts " #{"➥"} #{" No coding style error ! Good job my boy".light_green}"
+  else
+    print "#{"Major".light_red} • #{"Minor".light_green} • #{"Info".light_blue}"
+    puts
 
-  puts
-  puts " #{"MAJOR".light_red}: #{major} • #{"MINOR".light_green}: #{minor} • #{"INFO".light_blue}: #{info}"
+    codingstyle_manager.@errors.each { |key, value|
+      if value.size != 0
+        puts
+        if codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Major
+          puts " ‣ #{"(#{key})".light_red} - #{codingstyle_manager.@codingstyles[key].@desc}"
+        elsif codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Minor
+          puts " ‣ #{"(#{key})".light_green} - #{codingstyle_manager.@codingstyles[key].@desc}"
+        elsif codingstyle_manager.@codingstyles[key].@level == CodingStyleLevel::Info
+          puts " ‣ #{"(#{key})".light_blue} - #{codingstyle_manager.@codingstyles[key].@desc}"
+        end
+        puts
+        codingstyle_manager.@errors[key].each { |error|
+          puts "      • #{error.@file_path.dark_grey}#{error.@row != -1 ? ":#{error.@row}".dark_grey : ""}#{error.@column != -1 ? ":#{error.@column}".dark_grey : ""}#{error.@additional_info}"
+
+          if error.@codingstyle.@level == CodingStyleLevel::Major
+            major += 1
+          elsif error.@codingstyle.@level == CodingStyleLevel::Minor
+            minor += 1
+          elsif error.@codingstyle.@level == CodingStyleLevel::Info
+            info += 1
+          end
+        }
+      end
+    }
+
+    puts
+    puts " #{"MAJOR".light_red}: #{major} • #{"MINOR".light_green}: #{minor} • #{"INFO".light_blue}: #{info}"
+  end
 end

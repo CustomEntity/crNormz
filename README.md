@@ -64,10 +64,26 @@ Usage: crnormz [-fgtlh]
     -g, --ignore-function=           Ignore forbidden functions
     -t, --ignore-type=               Ignore errors of a specific type
     -l, --ignore-level=              Ignore errors of a specific level (Major, Minor or Info)
+    -r, --raw-output                 Enables easy parsing for applications
     -h, --help                       Show this help
-    
+
 # Run the norminette
 $ crnormz
+
+# Run the norminette excludind all .o files
+$ crnormz -f "*.o"
+
+# Run the norminette without checking the forbidden functions (printf and scanf)
+$ crnormz -g "printf,scanf"
+
+# Run the norminette excluding all O1 rules
+$ crnormz -t "O1"
+
+# Run the norminette excluding all info level rules
+$ crnormz -l "info"
+
+# Run the norminette without text formatting
+$ crnormz -r
 ```
 
 ## Features
