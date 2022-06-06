@@ -24,7 +24,7 @@ require "../../file/file_manager"
 
 # TODO: Improve this regex)
 FUNCTION_NAME_REGEX             = /^.*?\s*(?:unsigned|signed)?\s*(?:[A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+((\w|\*)+)\s*\([^)]*\)/m
-SNAKE_CASE_IGNORE_POINTER_REGEX = /^[*]*[a-z]+(?:_[a-z0-9]+)*$/m
+SNAKE_CASE_IGNORE_POINTER_REGEX = /^[*]*[a-z0-9]+(?:_[a-z0-9]+)*$/m
 
 class NamingFunctions < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
