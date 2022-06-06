@@ -25,7 +25,7 @@ require "../../file/file_manager"
 # TODO: Handle global constants UPPER_CASE
 TYPEDEF_TYPE_NAMES_REGEX     = /typedef.*;/
 DEFINE_LOWER_CASE_NAME_REGEX = /#define[\s]*([\w]*)/
-ONLY_UPPER_CASE_REGEX        = /^[A-Z_]+$/m
+ONLY_UPPER_CASE_REGEX        = /^[0-9A-Z_]+$/m
 ENUM_DECLARATION_REGEX       = /enum [\w]*\s*{/m
 
 class NamingIdentifiers < CodingStyle
