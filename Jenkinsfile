@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Compile crNormz') {
+        stage('Compile') {
             steps {
                 sh '''
                 crystal build src/crnormz.cr --release
@@ -15,7 +15,10 @@ pipeline {
             parallel {
                 stage('O1 - Contents of the Delivery Folder') {
                     steps {
-                        sh "echo 'toto'"
+                        sh """
+                        cd /tests/O1
+                        ${WORKSPACE}/crnormz
+                        """
                     }
                 }
                 stage('O3 - File Coherence') {
@@ -24,6 +27,10 @@ pipeline {
                     }
                 }
             }
+        }
+
+        stage('Cleanup') {
+            cleanWs()
         }
     }
 }
