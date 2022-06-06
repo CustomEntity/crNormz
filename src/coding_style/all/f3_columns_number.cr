@@ -36,8 +36,10 @@ class ColumnsNumber < CodingStyle
       column = 0
 
       column += line.scan(/[^\t]/).size
-      column += line.scan(/[\t]/).size * 8
 
+      if get_file_type(file_path) != FileType::Makefile
+        column += line.scan(/[\t]/).size * 8
+      end
       if column > 80
         errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, 80))
       end
