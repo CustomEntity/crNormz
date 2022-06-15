@@ -22,7 +22,7 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/O1
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -f "crnormz" -s`
                         if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
@@ -37,7 +37,7 @@ pipeline {
                     steps {
                             sh """#!/bin/bash
                         cd tests/O3
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "crnormz" -s`
                         if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
