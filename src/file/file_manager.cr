@@ -34,6 +34,10 @@ class FileManager
   def initialize(files : Array(String))
     @files = files
   end
+
+  def set_files(files : Array(String))
+    @files = files
+  end
 end
 
 def get_file_type(file_path : String) : FileType
