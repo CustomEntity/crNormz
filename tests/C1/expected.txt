@@ -1,7 +1,7 @@
 C1;test2.c;21;-1
-C1;test5.c;16;-1
 C1;test3.c;13;-1
 C1;test3.c;15;-1
 C1;test3.c;17;-1
 C1;test4.c;16;-1
+C1;test5.c;16;-1
 0;6;0

@@ -1,8 +1,8 @@
 F2;test2.c;32;47
 F2;test2.c;39;39
-F2;test5.c;8;21
 F2;test3.c;8;14
 F2;test3.c;13;28
 F2;test3.c;18;26
 F2;test4.c;8;25
+F2;test5.c;8;21
 7;0;0
