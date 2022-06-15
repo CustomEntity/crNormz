@@ -23,7 +23,7 @@ pipeline {
                         sh """
                         cd /tests/O1
                         out = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt"`
-                        if diff -q <(echo $out) expected.txt &>/dev/null; then
+                        if ! diff -q <(echo $out) expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -39,7 +39,7 @@ pipeline {
                             sh """
                         cd /tests/O3
                         out = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE"`
-                        if diff -q <(echo $out) expected.txt &>/dev/null; then
+                        if ! diff -q <(echo $out) expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -52,13 +52,15 @@ pipeline {
                 }
             }
         }
-
-        stage('Cleanup') {
-            steps {
-                script {
-                    cleanWs()
-                }
-            }
+    }
+    post {
+        always {
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
+                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                               [pattern: '.propsfile', type: 'EXCLUDE']])
         }
     }
 }
