@@ -23,7 +23,7 @@ require "../coding_style"
 require "../../file/file_manager"
 
 # TODO: Enhance this regex
-FUNCTION_SEPARATION_REGEX = /(([{};]|}[ \t])\n^[^ \n\t]* [^ \n\t]*\([^\n\t]*\)[^;])|([}]\n{3,}^[^ \n\t]+ [^ \n\t]+\([^\n\t]*\)[^;])/m
+FUNCTION_SEPARATION_REGEX = /(([};]|}[ \t])\n^[^ \n\t]* [^ \n\t]*\([^\n\t]*\)[^;])|([}]\n{3,}^[^ \n\t]+ [^ \n\t]+\([^\n\t]*\)[^;])/m
 
 class FunctionSeparation < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
