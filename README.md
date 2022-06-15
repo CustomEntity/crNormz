@@ -82,6 +82,9 @@ $ crnormz -t "O1"
 # Run the norminette excluding all info level rules
 $ crnormz -l "info"
 
+# Sort files alphabetically
+$ crnormz -s
+
 # Run the norminette without text formatting
 $ crnormz -r
 ```

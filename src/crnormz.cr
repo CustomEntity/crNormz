@@ -46,6 +46,9 @@ OptionParser.parse do |parser|
   parser.on("-r", "--raw-output", "Enables easy parsing for applications") { |levels|
     options["raw-output"] = ""
   }
+  parser.on("-s", "--sort", "Sort files alphabetically") { |levels|
+    options["sort-file"] = ""
+  }
   parser.on("-h", "--help", "Show this help") do
     puts parser
     exit
@@ -57,6 +60,11 @@ OptionParser.parse do |parser|
   end
 end
 
+if options.has_key?("sort-file")
+  sorted : Array(String) = file_manager.@files.sort
+  file_manager.set_files(sorted)
+end
+
 file_manager.@files.each { |file_path|
   content = ""
   if get_file_type(file_path) != FileType::Directory
@@ -66,8 +74,7 @@ file_manager.@files.each { |file_path|
     next
   end
   codingstyle_manager.@codingstyles.each_value { |codingstyle|
-    if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s.downcase() == codingstyle.@level.to_s.downcase() } != 0)
-      # TODO: Add check for options
+    if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s.downcase == codingstyle.@level.to_s.downcase } != 0)
       codingstyle_manager.apply_check_on(codingstyle, file_path, content, options)
     end
   }
@@ -99,9 +106,9 @@ if options.has_key?("raw-output") && has_value
   codingstyle_manager.@errors.each { |key, value|
     if value.size != 0
       codingstyle_manager.@errors[key].each { |error|
-        puts "#{error.@codingstyle.@type};#{error.@file_path};#{error.@row};#{error.@column}";#{error.@additional_info}"
+        puts "#{error.@codingstyle.@type};#{error.@file_path};#{error.@row};#{error.@column}"; # {error.@additional_info}"
 
-        if error.@codingstyle.@level == CodingStyleLevel::Major
+if error.@codingstyle.@level == CodingStyleLevel::Major
           major += 1
         elsif error.@codingstyle.@level == CodingStyleLevel::Minor
           minor += 1
