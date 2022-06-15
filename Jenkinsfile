@@ -21,7 +21,7 @@ pipeline {
                 stage('O1 - Contents of the Delivery Folder') {
                     steps {
                         sh """
-                        cd /tests/O1
+                        cd tests/O1
                         output = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt"`
                         if ! diff -q <(echo \$output) expected.txt &>/dev/null; then
                             echo "Expected:"
@@ -36,7 +36,7 @@ pipeline {
                 stage('O3 - File Coherence') {
                     steps {
                             sh """
-                        cd /tests/O3
+                        cd tests/O3
                         output = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE"`
                         if !diff -q <(echo \$output) expected.txt &>/dev/null; then
                             echo "Expected:"
