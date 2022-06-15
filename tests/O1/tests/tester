@@ -1,0 +1,166 @@
+#! /usr/bin/python3
+# coding:utf-8
+
+import json
+import os
+import sys
+import time
+import platform
+import subprocess
+import signal
+
+COLOR = {
+    'red': '\033[1;91m',
+    'green': '\033[1;92m',
+    'yellow': '\033[1;93m',
+    'blue': '\033[1;94m',
+    'purple': '\033[1;95m',
+    'white': '\033[1;0m'
+}
+
+FILE_NAME = "tester"
+VERSION = "0.1"
+
+TEST_PATH = f"{os.path.abspath(os.getcwd())}/tests/tests.json"
+
+BIN = None
+
+class tester:
+    def __init__(self, test_file):
+        self.tests_json = json.load(open(test_file))
+
+        self.passed = 0
+        self.total = len(self.tests_json)
+
+    def exec_tests(self):
+        print("Running tests...")
+        for test_name, test in self.tests_json.items():
+            self.exec_test_unit(test_name, test)
+        self.print_result()
+
+    def exec_test_unit(self, name, test):
+        print(f"[{COLOR['green']}-{COLOR['white']}] {name}", end="")
+
+        cmd = test.get("command")
+        if cmd == None:
+            print(f"\n\t{COLOR['red']}Error : no test found{COLOR['white']}")
+            return
+        cmd = cmd.replace("{BIN}", BIN)
+        process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        #? Set outputs
+        if test.get("stdout_from_prog") != None:
+            test["stdout"] = subprocess.run(test.get("stdout_from_prog"), \
+                shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.decode("utf-8")
+        if test.get("stderr_from_prog") != None:
+            test["stderr"] = subprocess.run(test.get("stderr_from_prog"), \
+                shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stderr.decode("utf-8")
+        if test.get("stdout_from_file") != None:
+            if not os.path.isfile(test.get("stdout_from_file")):
+                return print(f"\n\t{COLOR['red']}Error : 'stdout_from_file' file not found{COLOR['white']}")
+            test["stdout"] = open(test.get("stdout_from_file"), "r").read()
+        if test.get("stderr_from_file") != None:
+            if not os.path.isfile(test.get("stderr_from_file")):
+                return print(f"\n\t{COLOR['red']}Error : 'stderr_from_file' file not found{COLOR['white']}")
+            test["stderr"] = open(test.get("stderr_from_file"), "r").read()
+
+        #? Check if the output is correct
+        if (test.get("stdout") != None and test.get("stdout") != process.stdout.decode("utf-8")):
+            print(f"\n\t{COLOR['red']}Error : stdout not matching{COLOR['white']}")
+            expected = test.get('stdout').replace('\n', '\\n').replace("{BIN}", BIN)
+            print(f"\t\tExpected : {expected}")
+            got = process.stdout.decode("utf-8").replace('\n', '\\n')
+            print(f"\t\tGot      : {got}")
+            return
+
+        #? Check if the error is correct
+        if (test.get("stderr") != None and test.get("stderr").replace("{BIN}", BIN) != process.stderr.decode("utf-8")):
+            print(f"\n\t{COLOR['red']}Error : stderr not matching{COLOR['white']}")
+            expected = test.get('stderr').replace('\n', '\\n').replace("{BIN}", BIN)
+            print(f"\t\tExpected : '{expected}'")
+            got = process.stderr.decode("utf-8").replace('\n', '\\n')
+            print(f"\t\tGot      : '{got}'")
+            return
+
+        #? Check if the return code is correct
+        if (test.get("return_value") != None and test.get("return_value") != process.returncode):
+            print(f"\n\t{COLOR['red']}Error : return code not matching ({test.get('return_value')} -> {process.returncode}){COLOR['white']}")
+            return
+        print(f" {COLOR['green']}Ok{COLOR['white']}")
+        self.passed += 1
+
+    def print_result(self):
+        print(f"\nTests results : {self.passed}/{self.total} {self.passed/self.total*100 if self.total else 0:.2f}% passed")
+
+    def display_infos(self):
+        print(f"Number of tests : {COLOR['green']}{self.total}{COLOR['white']}")
+        for i, j in self.tests_json.items():
+            print(f"\t{COLOR['green'] if j.get('command') else COLOR['red']}- {COLOR['white']}{i}")
+
+def print_help():
+    print(f"Usage : {FILE_NAME} [options]\n")
+    print("Options :")
+    print(f"\t-t, --info\t\t\t\tInfos about the tests")
+    print(f"\t-h, --help\t\t\t\tDisplay this help")
+    print(f"\t-v, --version\t\t\t\tDisplay version")
+    print("\nExamples :")
+    print(f"\t{FILE_NAME} mysh\t\t\t\tRun the tests of mysh")
+    print("Don't forget to add the tests in the tests/tests.json file")
+    print("\nExemple of test syntax :")
+    print("\t{'command': 'ls -l', 'stdout': '-rw-r--r-- 1 root root 0 Jan 1 1970 tester', 'return_value': 0}")
+
+
+def infos():
+    if not os.path.exists(TEST_PATH):
+        print(f"[{COLOR['red']}-{COLOR['white']}] tests/tests.json not found tests can't be run")
+        return 84
+    tests = tester(TEST_PATH)
+    tests.display_infos()
+
+def test_flag(flag):
+    if flag in ["-i", "--info", "--infos"]:
+        infos()
+        return 0
+    if flag in ["-h", "--help"]:
+        print_help()
+        return 0
+    if flag in ["-v", "--version"]:
+        print(f"tester version {VERSION} ({platform.system()} {platform.release()})")
+        return 0
+    print(f"[{COLOR['red']}-{COLOR['white']}] Unknown flag : {flag}")
+    return 84
+
+def main():
+
+    # subprocess.Popen("docker run -itv $PWD:/mnt -w /mnt epitechcontent/epitest-docker:latest", shell=True)
+
+    # print()
+    #? Test if tests file exists
+    if not os.path.exists(TEST_PATH):
+        print(f"[{COLOR['red']}-{COLOR['white']}] tests/tests.json not found tests can't be run")
+        return 84
+
+    #? Load test file
+    tests = tester(TEST_PATH)
+
+    #? Build project
+    print(f"Building...\n")
+    make_sub = subprocess.run(['make', 're'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if not os.path.exists(BIN):
+        print(f"[{COLOR['red']}-{COLOR['white']}] Binnary '{BIN}' not found build failed !")
+        tests.print_result()
+        return 84
+
+    #? Run tests
+    tests.exec_tests()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        print(f"[{COLOR['red']}-{COLOR['white']}] Usage: {FILE_NAME} <binary_name>")
+        sys.exit(84)
+    if len(sys.argv) == 2:
+        if (sys.argv[1][0] == '-'):
+            exit(test_flag(sys.argv[1]))
+    BIN = f"./{sys.argv[1]}"
+    main()

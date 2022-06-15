@@ -1,0 +1,7 @@
+HANDLE THIS ERROR:
+
+void move_pointer(char * str)
+{
+    * str++;
+    *str--;
+}

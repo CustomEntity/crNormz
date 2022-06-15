@@ -4,10 +4,15 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                sh '''
-                crystal build src/crnormz.cr --release
-                echo "crNormz has been successfully built."
-                '''
+                script {
+                    sh 'crystal build src/crnormz.cr --release'
+                    if (fileExists './crnormz') {
+                        echo 'crNormz has been successfully built.'
+                    } else {
+                        echo 'An error occured with compilation.'
+                        exit(1)
+                    }
+                }
             }
         }
 
@@ -17,13 +22,24 @@ pipeline {
                     steps {
                         sh """
                         cd /tests/O1
-                        ${WORKSPACE}/crnormz
+                        out = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt"`
+                        if ! diff -q <(echo $out) expected.txt &>/dev/null; then
+                            exit 1
+                        fi
                         """
                     }
                 }
                 stage('O3 - File Coherence') {
                     steps {
-                        sh "echo 'tutu'"
+                        steps {
+                            sh """
+                        cd /tests/O1
+                        out = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE"`
+                        if ! diff -q <(echo $out) expected.txt &>/dev/null; then
+                            exit 1
+                        fi
+                        """
+                        }
                     }
                 }
             }

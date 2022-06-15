@@ -1,0 +1,286 @@
+{
+    "empty": {
+        "command": "echo ''|{BIN}",
+        "stderr": "",
+        "stdout": "",
+        "return_value": 0
+    },
+    "space" : {
+        "command": "echo ' '|{BIN}",
+        "stderr": "",
+        "stdout": "",
+        "return_value": 0
+    },
+    "parsing space" : {
+        "command": "echo '                  ls       -la'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'ls -la'|tcsh",
+        "return_value": 0
+    },
+    "parsing tab" : {
+        "command": "echo '\t ls\t -la'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'ls -la'|tcsh",
+        "return_value": 0
+    },
+    "parsing space and tab" : {
+        "command": "echo '\t        ls        \t      -la'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'ls -la'|tcsh",
+        "return_value": 0
+    },
+    "parsing quote error '\"'" : {
+        "command": "echo 'echo \"bark bark bark'|{BIN}",
+        "stderr": "Unmatched '\"'.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "parsing quote error '''" : {
+        "command": "echo \"echo 'bark bark bark\"|{BIN}",
+        "stderr": "Unmatched '''.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "simple command": {
+        "command": "echo 'pwd'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "pwd",
+        "return_value": 0
+    },
+    "simple command with multi args" : {
+        "command": "echo 'ls -l -a -d'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "ls -l -a -d",
+        "return_value": 0
+    },
+    "simple exec": {
+        "command": "echo 'tests/folder/simple'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "tests/folder/simple",
+        "return_value": 0
+    },
+    "wrong simple command": {
+        "command": "echo 'bark'|{BIN}",
+        "stderr": "bark: Command not found.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "simple cd": {
+        "command": "echo 'cd ..\npwd'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'cd ..\npwd'|tcsh",
+        "return_value": 0
+    },
+    "cd home": {
+        "command": "echo 'cd\npwd'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'cd\npwd'|tcsh",
+        "return_value": 0
+    },
+    "cd error file": {
+        "command": "echo 'cd {BIN}'|{BIN}",
+        "stderr": "{BIN}: Not a directory.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "cd error not found": {
+        "command": "echo 'cd bark'|{BIN}",
+        "stderr": "bark: No such file or directory.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "cd error not permission": {
+        "command": "echo 'cd /boot/efi'|{BIN}",
+        "stderr": "/boot/efi: Permission denied.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "cd error too many args": {
+        "command": "echo 'cd bark bark'|{BIN}",
+        "stderr": "cd: Too many arguments.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "cd error unset OLDPWD": {
+        "command": "echo 'cd -'|{BIN}",
+        "stderr": ": No such file or directory.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "exit": {
+        "command": "echo 'exit 42'|{BIN}",
+        "sterr": "",
+        "stdout": "",
+        "return_value": 42
+    },
+    "exit error": {
+        "command": "echo 'exit bark'|{BIN}",
+        "stderr": "exit: Expression Syntax.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "exit error badly": {
+        "command": "echo 'exit 4b'|{BIN}",
+        "stderr": "exit: Badly formed number.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "exit error too much args": {
+        "command": "echo 'exit 84 84'|{BIN}",
+        "stderr": "exit: Expression Syntax.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "setenv" : {
+        "command": "echo 'setenv bark epitech\nenv'|{BIN}|grep bark|cut -c 6-",
+        "stderr": "",
+        "stdout": "epitech\n",
+        "return_value": 0
+    },
+    "unsetenv" : {
+        "command": "echo 'setenv bark epitech\nenv\nunsetenv bark\nenv'|{BIN}|grep bark|cut -c 6-",
+        "stderr": "",
+        "stdout": "epitech\n",
+        "return_value": 0
+    },
+    "setenv error too many args" : {
+        "command": "echo 'setenv bark bark bark'|{BIN}",
+        "stderr": "setenv: Too many arguments.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "setenv error variable name first" : {
+        "command": "echo 'setenv ^bark epitech'|{BIN}",
+        "stderr": "setenv: Variable name must begin with a letter.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "setenv error variable alpha char" : {
+        "command": "echo 'setenv bark^ epitech'|{BIN}",
+        "stderr": "setenv: Variable name must contain alphanumeric characters.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "unsetenv path & notfound" : {
+        "command": "echo 'unsetenv PATH\nls'|{BIN}",
+        "stderr": "ls: Command not found.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "unsetenv multi" : {
+        "command": "echo 'setenv bark a\nsetenv epitech b\nenv\nunsetenv epitech bark\nenv'|{BIN}|grep 'bark\\|epitech'",
+        "stderr": "",
+        "stdout": "bark=a\nepitech=b\n",
+        "return_value": 0
+    },
+
+    "easy pipe" : {
+        "command": "echo 'echo bark|cat -e'|{BIN}",
+        "stderr": "",
+        "stdout": "bark$\n",
+        "return_value": 0
+    },
+    "easy double pipe" : {
+        "command": "echo 'echo bark|cat -e|cat -e'|{BIN}",
+        "stderr": "",
+        "stdout": "bark$$\n",
+        "return_value": 0
+    },
+    "easy 5 pipe" : {
+        "command": "echo 'echo bark|cat -e|cat -e|cat -e|cat -e|wc -c'|{BIN}",
+        "stderr": "",
+        "stdout": "9\n",
+        "return_value": 0
+    },
+    "cd in pipe" : {
+        "command": "echo 'cd|echo coucou\npwd'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'cd|echo coucou\npwd'|tcsh",
+        "return_value": 0
+    },
+    "tricky pipe" : {
+        "command": "echo 'cat -e | grep epitech | cat -e\ncoucou\nepitechbark\nbark\nepitech'|{BIN}",
+        "stderr": "",
+        "stdout": "epitechbark$$\nepitech$$\n",
+        "return_value": 0
+    },
+    "pipe error" : {
+        "command": "echo '|'|{BIN}",
+        "stderr": "Invalid null command.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "pipe error 2" : {
+        "command": "echo 'echo coucou|'|{BIN}",
+        "stderr": "Invalid null command.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "pipe error 3" : {
+        "command": "echo '|echo coucou'|{BIN}",
+        "stderr": "Invalid null command.\n",
+        "stdout": "",
+        "return_value": 1
+    },
+    "separator" : {
+        "command": "echo 'ls;ls'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'ls;ls'|tcsh",
+        "return_value": 0
+    },
+    "separator 2 only ;" : {
+        "command": "echo ';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;'|{BIN}",
+        "stderr": "",
+        "stdout": "",
+        "return_value": 0
+    },
+    "separator 3 only ;" : {
+        "command": "echo ';;;;;;;;;;;;;;;;;;;;;;;;;;\n;;;;;;;;;;;;;;;;;;;;;;;;;;;;'|{BIN}",
+        "stderr": "",
+        "stdout": "",
+        "return_value": 0
+    },
+    "separator 4" : {
+        "command": "echo 'cd;ls'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'cd;ls'|tcsh",
+        "return_value": 0
+    },
+    "separator 5" : {
+        "command": "echo 'mkdir epitech_test; cd epitech_test; touch lol; ls; cd ..; rm -rf epitech_test'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'mkdir epitech_test; cd epitech_test; touch lol; ls; cd ..; rm -rf epitech_test'|tcsh",
+        "return_value": 0
+    },
+
+    "redirection right 1" : {
+        "command": "echo 'ls -l > epitech_test\nrm epitech_test'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'ls -l > epitech_test\nrm epitech_test'|tcsh",
+        "return_value": 0
+    },
+    "redirection right 2" : {
+        "command": "echo lol > epitech_test;echo 'ls -l > epitech_test\nrm epitech_test'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo lol > epitech_test;echo 'ls -l > epitech_test\nrm epitech_test'|tcsh",
+        "return_value": 0
+    },
+    "redirection double right 1" : {
+        "command": "echo 'ls -l >> epitech_test\nrm epitech_test'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'ls -l >> epitech_test\nrm epitech_test'|tcsh",
+        "return_value": 0
+    },
+    "redirection double right 2" : {
+        "command": "echo lol > epitech_test;echo 'ls -l >> epitech_test\nrm epitech_test'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo lol > epitech_test;echo 'ls -l >> epitech_test\nrm epitech_test'|tcsh",
+        "return_value": 0
+    },
+    "pipe and redirection right" : {
+        "command": "echo 'ls -l | cat -e > epitech_test\nrm epitech_test'|{BIN}",
+        "stderr": "",
+        "stdout_from_prog": "echo 'ls -l | cat -e > epitech_test\nrm epitech_test'|tcsh",
+        "return_value": 0
+    }
+}
