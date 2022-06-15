@@ -25,7 +25,7 @@ pipeline {
                         out = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt"`
                         if diff -q <(echo $out) expected.txt &>/dev/null; then
                             echo "Expected:"
-                            echo "$(<expected.txt)"
+                            cat expected.txt
                             echo "Got:"
                             echo $out
                             exit 1
