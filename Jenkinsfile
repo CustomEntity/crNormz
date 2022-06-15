@@ -23,7 +23,11 @@ pipeline {
                         sh """
                         cd /tests/O1
                         out = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt"`
-                        if ! diff -q <(echo $out) expected.txt &>/dev/null; then
+                        if diff -q <(echo $out) expected.txt &>/dev/null; then
+                            echo "Expected:"
+                            echo "$(<expected.txt)"
+                            echo "Got:"
+                            echo $out
                             exit 1
                         fi
                         """
@@ -33,9 +37,13 @@ pipeline {
                     steps {
                         steps {
                             sh """
-                        cd /tests/O1
+                        cd /tests/O3
                         out = `${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE"`
-                        if ! diff -q <(echo $out) expected.txt &>/dev/null; then
+                        if diff -q <(echo $out) expected.txt &>/dev/null; then
+                            echo "Expected:"
+                            echo "$(<expected.txt)"
+                            echo "Got:"
+                            echo $out
                             exit 1
                         fi
                         """
@@ -47,7 +55,9 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                cleanWs()
+                script {
+                    cleanWs()
+                }
             }
         }
     }
