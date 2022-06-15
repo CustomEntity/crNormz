@@ -106,9 +106,9 @@ if options.has_key?("raw-output") && has_value
   codingstyle_manager.@errors.each { |key, value|
     if value.size != 0
       codingstyle_manager.@errors[key].each { |error|
-        puts "#{error.@codingstyle.@type};#{error.@file_path};#{error.@row};#{error.@column}"; # {error.@additional_info}"
+        puts "#{error.@codingstyle.@type};#{error.@file_path};#{error.@row};#{error.@column}" # {error.@additional_info}"
 
-if error.@codingstyle.@level == CodingStyleLevel::Major
+        if error.@codingstyle.@level == CodingStyleLevel::Major
           major += 1
         elsif error.@codingstyle.@level == CodingStyleLevel::Minor
           minor += 1
