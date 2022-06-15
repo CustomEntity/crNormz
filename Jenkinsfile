@@ -23,7 +23,7 @@ pipeline {
                         sh """#!/bin/bash
                         cd tests/O1
                         output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -37,8 +37,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/O3
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -52,8 +52,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/O4
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -67,8 +67,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/G1
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -82,8 +82,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/G2
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -97,8 +97,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/G3
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -112,8 +112,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/G6
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -127,8 +127,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/G7
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -142,8 +142,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/G8
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -157,8 +157,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/G9
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -172,8 +172,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/F2
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -187,8 +187,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/F3
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -202,8 +202,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/F4
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -217,8 +217,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/F5
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -232,8 +232,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/F6
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -247,8 +247,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/L1
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -262,8 +262,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/L2
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -277,8 +277,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/L4
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -292,8 +292,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/V1
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -307,8 +307,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/V3
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -322,8 +322,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/C1
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -337,8 +337,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/C3
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -352,8 +352,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/A3
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -367,8 +367,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/H2
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
@@ -382,8 +382,8 @@ pipeline {
                     steps {
                         sh """#!/bin/bash
                         cd tests/H3
-                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -s`
-                        if ! diff -q <(printf "\$output") expected.txt &>/dev/null; then
+                        output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt" -s`
+                        if ! diff -q <(echo "\$output") expected.txt &>/dev/null; then
                             echo "Expected:"
                             cat expected.txt
                             echo "Got:"
