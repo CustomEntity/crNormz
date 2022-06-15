@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     sh 'crystal build src/crnormz.cr --release'
-                    if (fileExists './crnormz') {
+                    if (fileExists('./crnormz')) {
                         echo 'crNormz has been successfully built.'
                     } else {
                         echo 'An error occured with compilation.'
