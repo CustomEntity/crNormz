@@ -4,15 +4,8 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                script {
-                    sh 'crystal build src/crnormz.cr --release'
-                    if (fileExists('./crnormz')) {
-                        echo 'crNormz has been successfully built.'
-                    } else {
-                        echo 'An error occured with compilation.'
-                        exit(1)
-                    }
-                }
+                sh 'crystal build src/crnormz.cr --release'
+                echo 'crNormz has been successfully built.'
             }
         }
 
