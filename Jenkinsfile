@@ -20,7 +20,7 @@ pipeline {
             parallel {
                 stage('O1 - Contents of the Delivery Folder') {
                     steps {
-                        sh """
+                        sh """#!/bin/bash
                         cd tests/O1
                         output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE" -f "expected.txt"`
                         if ! diff -q <(echo \$output) expected.txt &>/dev/null; then
@@ -35,7 +35,7 @@ pipeline {
                 }
                 stage('O3 - File Coherence') {
                     steps {
-                            sh """
+                            sh """#!/bin/bash
                         cd tests/O3
                         output=`${WORKSPACE}/crnormz --raw-output -f "TO_IMPROVE"`
                         if !diff -q <(echo \$output) expected.txt &>/dev/null; then
