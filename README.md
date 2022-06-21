@@ -22,6 +22,7 @@ using <a href="https://crystal-lang.org" target="_blank">Crystal</a>.</h4>
   <a href="#installation">Installation</a> •
   <a href="#how-to-use">How to use</a> •
   <a href="#features">Features</a> •
+  <a href="#benchmarks">Benchmarks</a> •
   <a href="#credits">Credits</a>
 </p>
 
@@ -132,7 +133,19 @@ $ crnormz -r
 | <img src="assets/readme/info.png" width="16" vertical-align="middle"/> A3                |                       File should end with a line break                        |    <font style="color: green; font-size: 16px;">✓</font>    |
 | <center><img src="assets/readme/major.png" width="16" vertical-align="middle"/></center> |                               Forbidden function                               |    <font style="font-size: 16px;">🔨</font>     |
 
-# Credits
+## Benchmarks
+
+These benchmarks were performed on a project in real use with 225 source files, 30 header files and 1 Makefile.
+
+| Norminette           | Time, s |   Major |  Minor |   Info |
+|:---------------------|--------:|--------:|-------:|-------:|
+| **Epitech National** | **N/A** | **473** | **59** | **49** |
+| 👑 crNormz           |   0.550 |     481 |     84 |     49 |
+| Abricot              |   7.302 |      99 |    228 |     48 |
+| JankunNorme          |   1.274 |     259 |    209 |     48 |
+| Bubulle              |  10.763 |      27 |     22 |     49 |
+
+## Credits
 
 - [Moreno Flavio - Developer](https://github.com/CustomEntity/)
 - [Kucia Guillaume - E-artsup student](https://github.com/KuciaGuillaume)
