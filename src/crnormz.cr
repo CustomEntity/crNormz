@@ -67,11 +67,11 @@ end
 
 file_manager.@files.each { |file_path|
   content = ""
-  if get_file_type(file_path) != FileType::Directory
-    content = File.read(file_path)
-  end
   if options.has_key?("ignoring-files") && Regex.new(options["ignoring-files"]).match(file_path)
     next
+  end
+  if get_file_type(file_path) != FileType::Directory
+    content = File.read(file_path)
   end
   codingstyle_manager.@codingstyles.each_value { |codingstyle|
     if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s.downcase == codingstyle.@level.to_s.downcase } != 0)
