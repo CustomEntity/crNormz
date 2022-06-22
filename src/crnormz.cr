@@ -22,43 +22,14 @@
 require "./utils/string_utils"
 require "./file/file_manager"
 require "./coding_style/coding_style_manager"
+require "./option/option_manager"
 require "option_parser"
 require "benchmark"
 
 codingstyle_manager = CodingStyleManager.new
 file_manager = FileManager.new(Dir.glob("**/*"))
-options = Hash(String, String).new
-
-OptionParser.parse do |parser|
-  parser.banner = "Usage: crnormz [-fgtlh]"
-  parser.on("-f", "--ignore-file=", "Ignore file from the checker") { |files|
-    options["ignoring-files"] = files
-  }
-  parser.on("-g", "--ignore-function=", "Ignore forbidden functions") { |functions|
-    options["ignoring-functions"] = functions
-  }
-  parser.on("-t", "--ignore-type=", "Ignore errors of a specific type") { |types|
-    options["ignoring-types"] = types
-  }
-  parser.on("-l", "--ignore-level=", "Ignore errors of a specific level (Major, Minor or Info)") { |levels|
-    options["ignoring-levels"] = levels
-  }
-  parser.on("-r", "--raw-output", "Enables easy parsing for applications") { |levels|
-    options["raw-output"] = ""
-  }
-  parser.on("-s", "--sort", "Sort files alphabetically") { |levels|
-    options["sort-file"] = ""
-  }
-  parser.on("-h", "--help", "Show this help") do
-    puts parser
-    exit
-  end
-  parser.invalid_option do |flag|
-    STDERR.puts "ERROR: #{flag} is not a valid option."
-    STDERR.puts parser
-    exit(1)
-  end
-end
+option_manager = OptionManager.new
+options = option_manager.parse_options
 
 if options.has_key?("sort-file")
   sorted : Array(String) = file_manager.@files.sort
@@ -73,9 +44,10 @@ file_manager.@files.each { |file_path|
   if get_file_type(file_path) != FileType::Directory
     content = File.read(file_path)
   end
+  lines = content.split("\n")
   codingstyle_manager.@codingstyles.each_value { |codingstyle|
     if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s.downcase == codingstyle.@level.to_s.downcase } != 0)
-      codingstyle_manager.apply_check_on(codingstyle, file_path, content, options)
+      codingstyle_manager.apply_check_on(codingstyle, file_path, content, lines, options)
     end
   }
 }

@@ -29,19 +29,18 @@ class LinesNumber < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    splitted_content = content.split("\n")
 
     content.scan(FUNCTION_DECLARATION_REGEX).each { |match|
-      row, _ = self.get_row_column(splitted_content, match.end)
+      row, _ = self.get_row_column(lines, match.end)
       indent_level = 1
       line_count = 0
 
-      (row...splitted_content.size).each { |i|
-        indent_level += splitted_content[i].count("{")
-        if splitted_content[i] =~ /}/
-          indent_level -= splitted_content[i].count("}")
+      (row...lines.size).each { |i|
+        indent_level += lines[i].count("{")
+        if lines[i] =~ /}/
+          indent_level -= lines[i].count("}")
           if indent_level <= 0
             break
           end

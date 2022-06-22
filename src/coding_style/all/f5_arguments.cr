@@ -30,15 +30,15 @@ class Arguments < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
     content.scan(NO_VOID_ARG_REGEX).each { |match|
-      row, _ = get_row_column(content.split("\n"), match.end)
+      row, _ = get_row_column(lines, match.end)
       errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1, " (A function taking no parameters should take void as argument)".magenta))
     }
     content.scan(TOO_MANY_ARG_REGEX).each { |match|
-      row, _ = get_row_column(content.split("\n"), match.begin)
+      row, _ = get_row_column(lines, match.begin)
       errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1, " (A function should not need more than 4 arguments)".magenta))
     }
     errors

@@ -30,9 +30,9 @@ class ConditionalBranching < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    splitted_content = content.split("\n")
+    splitted_content = lines
     curr_line : Int32 = 1
     depth : Int32 = 0
     is_no_bracket_cond : Bool = false

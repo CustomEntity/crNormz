@@ -27,7 +27,7 @@ class IndentPrepDir < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
     curr_line = 1
     indentation_level = 0
@@ -35,7 +35,7 @@ class IndentPrepDir < CodingStyle
       if line =~ /^(\s*)#\s*if/
         line_match = line.scan(/^(\s*)#\s*if/)
         if line_match[0].captures[0].to_s.size != indentation_level * 4
-          row, column = get_row_column(content.split("\n"), line_match[0].begin)
+          row, column = get_row_column(lines, line_match[0].begin)
           errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, column + line_match[0].captures[0].to_s.size))
         end
         indentation_level += 1
@@ -43,19 +43,19 @@ class IndentPrepDir < CodingStyle
         line_match = line.scan(/^(\s*)#\s*endif/)
         indentation_level -= 1
         if line_match[0].captures[0].to_s.size != indentation_level * 4
-          row, column = get_row_column(content.split("\n"), line_match[0].begin)
+          row, column = get_row_column(lines, line_match[0].begin)
           errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, column + line_match[0].captures[0].to_s.size))
         end
       elsif line =~ /^(\s*)#\s*else|elif/
         line_match = line.scan(/^(\s*)#\s*else|elif/)
         if line_match[0].captures[0].to_s.size != (indentation_level - 1) * 4
-          row, column = get_row_column(content.split("\n"), line_match[0].begin)
+          row, column = get_row_column(lines, line_match[0].begin)
           errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, column + line_match[0].captures[0].to_s.size))
         end
       elsif line =~ /^(\s*)#/
         line_match = line.scan(/^(\s*)#/)
         if line_match[0].captures[0].to_s.size != indentation_level * 4
-          row, column = get_row_column(content.split("\n"), line_match[0].begin)
+          row, column = get_row_column(lines, line_match[0].begin)
           errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line, column + line_match[0].captures[0].to_s.size))
         end
       end

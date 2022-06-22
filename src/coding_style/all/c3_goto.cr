@@ -29,12 +29,12 @@ class Goto < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
 
     content.scan(GOTO_REGEX).each { |match|
-      row, column = get_row_column(content.split("\n"), match.begin)
+      row, column = get_row_column(lines, match.begin)
       errors.add(CodingStyleErrorInfo.new(self, file_path, row, column))
     }
     errors

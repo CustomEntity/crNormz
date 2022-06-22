@@ -33,32 +33,32 @@ class NamingIdentifiers < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, content : String, options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    splitted_content = content.split("\n")
+    splitted_content = lines
 
     content.scan(TYPEDEF_TYPE_NAMES_REGEX).each { |match|
       splitted = match[0].split(" ")
       if splitted[-1].chomp(";") !~ /_t$/
-        row, column = get_row_column(splitted_content, match.begin)
+        row, column = get_row_column(lines, match.begin)
         errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (The type names defined with typedef should end with _t)".magenta))
       end
       if splitted[-1].chomp(";").rstrip !~ SNAKE_CASE_REGEX
-        row, column = get_row_column(splitted_content, match.begin)
+        row, column = get_row_column(lines, match.begin)
         errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (All identifier names should be according to the snake_case convention)".magenta))
       end
     }
     content.scan(DEFINE_LOWER_CASE_NAME_REGEX).each { |match|
       if match.captures[0] !~ ONLY_UPPER_CASE_REGEX
-        row, column = get_row_column(splitted_content, match.begin)
+        row, column = get_row_column(lines, match.begin)
         errors.add(CodingStyleErrorInfo.new(self, file_path, row, column, " (The names of macros should be written in UPPER_CASE)".magenta))
       end
     }
     content.scan(ENUM_DECLARATION_REGEX).each { |match|
       row, column = get_row_column(splitted_content, match.begin)
       curr_line = row
-      while !splitted_content[curr_line].includes?("}")
-        if splitted_content[curr_line] =~ /[*a-z].*/
+      while !lines[curr_line].includes?("}")
+        if lines[curr_line] =~ /[*a-z].*/
           errors.add(CodingStyleErrorInfo.new(self, file_path, curr_line + 1, -1, " (The content of enums should be written in UPPER_CASE)".magenta))
         end
         curr_line += 1
