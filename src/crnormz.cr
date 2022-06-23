@@ -37,6 +37,7 @@ if options.has_key?("sort-file")
 end
 
 file_manager.@files.each { |file_path|
+  file_type : FileType = get_file_type(file_path)
   content = ""
   if options.has_key?("ignoring-files") && Regex.new(options["ignoring-files"]).match(file_path)
     next
@@ -45,6 +46,9 @@ file_manager.@files.each { |file_path|
     content = File.read(file_path)
   end
   lines = content.split("\n")
+  if file_type == FileType::Source || file_type == FileType::Header
+    comments : Set(Comment) = retrieve_comments(content)
+  end
   codingstyle_manager.@codingstyles.each_value { |codingstyle|
     if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s.downcase == codingstyle.@level.to_s.downcase } != 0)
       codingstyle_manager.apply_check_on(codingstyle, file_path, content, lines, options)
