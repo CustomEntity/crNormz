@@ -29,12 +29,10 @@ class ColumnsNumber < CodingStyle
 
   def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-    lines = lines.map { |line| line + "\n" }
     curr_line = 1
 
     lines.each { |line|
       column = 0
-
       column += line.scan(/[^\t]/).size
 
       if get_file_type(file_path) != FileType::Makefile

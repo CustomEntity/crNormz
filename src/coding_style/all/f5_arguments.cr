@@ -22,7 +22,8 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-NO_VOID_ARG_REGEX  = /^.*(?!\s\n)*(unsigned|signed)?[^\n\s]*([A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double|bool)\s+((?:\w|\*)+)\s*\(\)[ \n]*({|;)/m
+#NO_VOID_ARG_REGEX  = /^.*(?!\s\n)*(unsigned|signed)?[^\n\s]*([A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double|bool)\s+((?:\w|\*)+)\s*\(\)[ \n]*({|;)/m
+NO_VOID_ARG_REGEX = /^(?:\w*[ ]*(?:unsigned|signed)?[ \t]*\w\s+\**)+\w+\s*\(\s*\)/m
 TOO_MANY_ARG_REGEX = /\((?:[^(),]*,){4,}[^()]*\)[ \t\n]+{/
 
 class Arguments < CodingStyle

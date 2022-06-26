@@ -21,6 +21,8 @@
 # SOFTWARE.
 require "../coding_style/coding_style"
 
+COMMENT_REGEX = /(\'.*?\'|\".*?\")|(\/\*.*?\*\/|\/\/[^\r\n]*$)/m
+
 @[Flags]
 enum FileType
   Header
@@ -28,6 +30,13 @@ enum FileType
   Makefile
   Directory
   Unknown
+end
+
+class Comment
+  def initialize(byte_begin : Int32, byte_end : Int32)
+    @byte_begin = byte_begin
+    @byte_end = byte_end
+  end
 end
 
 class FileManager
@@ -38,6 +47,15 @@ class FileManager
   def set_files(files : Array(String))
     @files = files
   end
+end
+
+def retrieve_comments(content : String) : Set(Comment)
+  comments : Set(Comment) = Set(Comment).new
+
+  content.scan(COMMENT_REGEX).each {|match|
+    comments.add(Comment.new(match.begin, match.end))
+  }
+  comments
 end
 
 def get_file_type(file_path : String) : FileType

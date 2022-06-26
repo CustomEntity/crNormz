@@ -31,7 +31,7 @@ class IndentPrepDir < CodingStyle
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
     curr_line = 1
     indentation_level = 0
-    content.each_line { |line|
+    lines.each { |line|
       if line =~ /^(\s*)#\s*if/
         line_match = line.scan(/^(\s*)#\s*if/)
         if line_match[0].captures[0].to_s.size != indentation_level * 4

@@ -33,8 +33,6 @@ class IncludeGuard < CodingStyle
 
   def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
-
-    lines = lines.map { |line| line + "\n" }
     header_name : String?
 
     ifndef_match = content.scan(IFNDEF_MACRO_REGEX)
