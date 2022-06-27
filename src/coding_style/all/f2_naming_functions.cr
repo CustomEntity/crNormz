@@ -23,7 +23,7 @@ require "../coding_style"
 require "../../file/file_manager"
 
 # TODO: Improve this regex)
-FUNCTION_NAME_REGEX             = /^.*?\s*(?:unsigned|signed)?\s*(?:[A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+((\w|\*)+)\s*\([^)]*\)/m
+FUNCTION_NAME_REGEX             = /^(?:\w*[ ]*(?:unsigned|signed)?[ \t]*\w\s+\**)+(\w+)\s*\([^;]*?/m
 SNAKE_CASE_IGNORE_POINTER_REGEX = /^[*]*[a-z0-9]+(?:_[a-z0-9]+)*$/m
 
 class NamingFunctions < CodingStyle
@@ -36,8 +36,8 @@ class NamingFunctions < CodingStyle
 
     content.scan(FUNCTION_NAME_REGEX).each { |match|
       if match.captures[0] !~ SNAKE_CASE_IGNORE_POINTER_REGEX
-        row, column = get_row_column(lines, match.end)
-        errors.add(CodingStyleErrorInfo.new(self, file_path, row, column))
+        row, column = get_row_column(lines, match.begin)
+        errors.add(CodingStyleErrorInfo.new(self, file_path, row, -1))
       end
     }
     errors
