@@ -75,12 +75,9 @@ class CodingStyle
     @errors = Set(CodingStyleErrorInfo).new
   end
 
-  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, comments : Set(Comment), content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     puts "Handle method not implemented !"
     exit(84)
-  end
-
-  def handle_line(file_path : String, line : String, options : Hash(String, Strig)) : Set(CodingStyleErrorInfo)
   end
 
   def get_row_column(lines : Array(String), byte : Int32)

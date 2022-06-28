@@ -135,14 +135,14 @@ class CodingStyleManager
     @codingstyles[MACROS.@type] = MACROS
   end
 
-  def apply_check_on(codingstyle : CodingStyle, file_path : String, content : String, lines : Array(String), options : Hash(String, String))
+  def apply_check_on(codingstyle : CodingStyle, comments : Set(Comment), file_path : String, content : String, lines : Array(String), options : Hash(String, String))
     curr_errors : Set(CodingStyleErrorInfo)
     if (@errors.has_key?(codingstyle.@type))
       curr_errors = @errors[codingstyle.@type]
     else
       curr_errors = Set(CodingStyleErrorInfo).new
     end
-    new_errors : Set(CodingStyleErrorInfo) = codingstyle.handle(file_path, content, lines, options)
+    new_errors : Set(CodingStyleErrorInfo) = codingstyle.handle(file_path, comments, content, lines, options)
     new_errors.each { |err|
       curr_errors.add(err)
     }

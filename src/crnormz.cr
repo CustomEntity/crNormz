@@ -24,7 +24,7 @@ require "./file/file_manager"
 require "./coding_style/coding_style_manager"
 require "./option/option_manager"
 require "option_parser"
-require "benchmark"
+#require "benchmark"
 
 codingstyle_manager = CodingStyleManager.new
 file_manager = FileManager.new(Dir.glob("**/*"))
@@ -46,12 +46,13 @@ file_manager.@files.each { |file_path|
     content = File.read(file_path)
   end
   lines = content.split("\n")
+  comments : Set(Comment) = Set(Comment).new
   if file_type == FileType::Source || file_type == FileType::Header
-    comments : Set(Comment) = retrieve_comments(content)
+    comments = retrieve_comments(content)
   end
   codingstyle_manager.@codingstyles.each_value { |codingstyle|
     if is_right_file_type(get_file_type(file_path), codingstyle.@file_target) && !(options.has_key?("ignoring-types") && options["ignoring-types"].split(",").count { |s| s == codingstyle.@type.to_s } != 0) && !(options.has_key?("ignoring-levels") && options["ignoring-levels"].split(",").count { |s| s.downcase == codingstyle.@level.to_s.downcase } != 0)
-      codingstyle_manager.apply_check_on(codingstyle, file_path, content, lines, options)
+      codingstyle_manager.apply_check_on(codingstyle, comments, file_path, content, lines, options)
     end
   }
 }

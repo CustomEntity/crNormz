@@ -22,14 +22,14 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-FUNCTION_DECLARATION_REGEX = /.*?\s*(?:unsigned|signed)?\s*(?:[A-Z]|\w*_t|s_\w*|void|int|char|short|long|float|double)\s+(?:(?:\w|\*)+)\s*\([^)]*\)(?:.|\n)*?{/
+FUNCTION_DECLARATION_REGEX = /^(?:\w*[ ]*(?:unsigned|signed)?[ \t]*\w\s+\**)+\w+\s*\([^;]*?{/
 
 class LinesNumber < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, comments : Set(Comment), content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
     content.scan(FUNCTION_DECLARATION_REGEX).each { |match|

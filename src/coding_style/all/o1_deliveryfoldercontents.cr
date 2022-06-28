@@ -27,7 +27,7 @@ class DeliveryFolderContents < CodingStyle
     super(@type, @file_target, @level, @name, @desc)
   end
 
-  def handle(file_path : String, content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
+  def handle(file_path : String, comments : Set(Comment), content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
     if (get_file_type(file_path) == FileType::Unknown)
