@@ -34,8 +34,7 @@ using <a href="https://crystal-lang.org" target="_blank">Crystal</a>.</h4>
 ## Project Description
 
 crNormz is a norm checking program developed using Crystal so that students can
-check for compliance with the EPITECH standard. This standard is not yet the
-best but it is intended to be in the very near future.
+check for compliance with the EPITECH standard. This linter is currently the fastest, most reliable and most accurate, see <a href="#benchmarks">Benchmarks</a>
 
 ## Installation
 
