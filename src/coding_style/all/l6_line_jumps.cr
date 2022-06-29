@@ -22,9 +22,10 @@
 require "../coding_style"
 require "../../file/file_manager"
 
-FUNCTION_DECLARATION_REGEX = /^(?:\w*[ ]*(?:unsigned|signed)?[ \t]*\w\s+\**)+\w+\s*\([^;]*?{/
+FUNCTION_DECL_REGEX = /^(?:\w*[ ]*(?:unsigned|signed)?[ \t]*\w\s+\**)+(\w+)\s*\([^;]*?{/m
+VARIABLE_DECL_REGEX = /^[ \t]*(?!return|typedef|goto)((\w+[ \t,]*\*?[ \t,]+)+)+(\**\w+)(\[\w*\])?([ \t,]*=|;)/
 
-class LinesNumber < CodingStyle 
+class LineJumps < CodingStyle
   def initialize(@type : CodingStyleType, @file_target : Int32, @level : CodingStyleLevel, @name : String, @desc : String)
     super(@type, @file_target, @level, @name, @desc)
   end
@@ -32,10 +33,10 @@ class LinesNumber < CodingStyle
   def handle(file_path : String, comments : Set(Comment), content : String, lines : Array(String), options : Hash(String, String)) : Set(CodingStyleErrorInfo)
     errors : Set(CodingStyleErrorInfo) = Set(CodingStyleErrorInfo).new
 
-    content.scan(FUNCTION_DECLARATION_REGEX).each { |match|
+    content.scan(FUNCTION_DECL_REGEX).each { |match|
       row, _ = self.get_row_column(lines, match.end)
       indent_level = 1
-      line_count = 0
+      is_in_decl_zone : Bool = true
 
       (row...lines.size).each { |i|
         indent_level += lines[i].count("{")
@@ -45,9 +46,11 @@ class LinesNumber < CodingStyle
             break
           end
         end
-        line_count += 1
-        if line_count > 20
+        if lines[i] =~ VARIABLE_DECL_REGEX && is_in_decl_zone == false
           errors.add(CodingStyleErrorInfo.new(self, file_path, i + 1, -1))
+        end
+        if is_in_decl_zone && lines[i].strip.empty?
+          is_in_decl_zone = false
         end
       }
     }

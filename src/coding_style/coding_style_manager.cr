@@ -37,6 +37,7 @@ require "./all/f5_arguments"
 require "./all/f6_comment_in_func"
 require "./all/l1_code_line_content"
 require "./all/l2_indent"
+require "./all/l6_line_jumps"
 require "./all/l4_curly_brackets"
 require "./all/v1_naming_identifiers"
 require "./all/v3_pointers"
@@ -84,6 +85,8 @@ INDENT =
   Indent.new(CodingStyleType::L2, FileType::Source.value | FileType::Header.value | FileType::Makefile.value, CodingStyleLevel::Minor, "Indentation", "Each indentation level must be done by using 4 spaces. When entering a new scope the indentation level must be incremented.")
 CURLY_BRACKETS =
   CurlyBrackets.new(CodingStyleType::L4, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Minor, "Curly brackets", "Opening curly brackets should be at the end of their line, except for functions where they must be placed alone on their line.")
+LINE_JUMPS =
+  LineJumps.new(CodingStyleType::L6, FileType::Source.value, CodingStyleLevel::Minor, "Line Jumps", "A line break should separate the variable declarations from the remainder of the function. No other line breaks should be present in the scope of a function.")
 NAMING_IDENTIFIERS =
   NamingIdentifiers.new(CodingStyleType::V1, FileType::Source.value | FileType::Header.value, CodingStyleLevel::Major, "Naming Identifiers", "All identifier names should be in English, according to the snake_case convention.")
 POINTERS =
@@ -126,6 +129,7 @@ class CodingStyleManager
     @codingstyles[CODE_LINE_CONTENT.@type] = CODE_LINE_CONTENT
     @codingstyles[INDENT.@type] = INDENT
     @codingstyles[CURLY_BRACKETS.@type] = CURLY_BRACKETS
+    @codingstyles[LINE_JUMPS.@type] = LINE_JUMPS
     @codingstyles[NAMING_IDENTIFIERS.@type] = NAMING_IDENTIFIERS
     @codingstyles[POINTERS.@type] = POINTERS
     @codingstyles[CONDITIONAL_BRANCHING.@type] = CONDITIONAL_BRANCHING
